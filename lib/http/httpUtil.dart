@@ -259,6 +259,7 @@ class LogsInterceptors extends InterceptorsWrapper {
   @override
   onResponse(Response response) {
     print("log返回结果${response.data}");
+ //   _printDataStr("log返回结果",response.data);
     return response; // continue
   }
 

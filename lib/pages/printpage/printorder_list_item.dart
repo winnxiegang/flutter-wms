@@ -22,15 +22,17 @@ class PrintOrderListItemPageState extends State<PrintOrderListItemPage> {
   //所有的请求 小组件 方法 都要在这个class内部
   // 总数
   EasyRefreshController _controller;
-  List<PrintOrderDataResult> _listPrintOrderDataResult;
-  PrintOrderEntity _printOrderEntity;
+  List<PrintOrderDataResult> _listPrintOrderDataResult = []; //总数据
+  PrintOrderEntity _printOrderEntity; //每次请求的数据
   Future<PrintOrderEntity> _futureBuildOrderList;
+  bool isfirstRefush = true;
 
   @override
   void initState() {
-    super.initState();
+    isfirstRefush = true;
     _controller = EasyRefreshController();
-    onRefreshData();
+    _futureBuildOrderList = _requestOrderList();
+    super.initState();
   }
 
   ///界面数据更改后 操作事情
@@ -66,7 +68,6 @@ class PrintOrderListItemPageState extends State<PrintOrderListItemPage> {
 
   void onRefreshData() {
     widget.page = 1;
-    _listPrintOrderDataResult?.clear();
     _futureBuildOrderList = _requestOrderList();
   }
 
@@ -77,13 +78,46 @@ class PrintOrderListItemPageState extends State<PrintOrderListItemPage> {
 
   Widget _createListView(
       BuildContext context, AsyncSnapshot<PrintOrderEntity> snapshot) {
+    if (isfirstRefush) {
+      switch (snapshot.connectionState) {
+        case ConnectionState.none:
+        case ConnectionState.waiting:
+        case ConnectionState.active:
+          // 显示正在加载
+          return loadingCellBox();
+        case ConnectionState.done:
+          // 提示错误信息
+          if (snapshot.hasError) {
+            return loadingErrorClick(() {
+              onRefreshData();
+              ToastOk.show(msg: snapshot.toString());
+            });
+          }
+      }
+    } else {
+      switch (snapshot.connectionState) {
+        case ConnectionState.none:
+        case ConnectionState.waiting:
+        case ConnectionState.active:
+        case ConnectionState.done:
+          // 提示错误信息
+          if (snapshot.hasError) {
+            return loadingErrorClick(() {
+              onRefreshData();
+            });
+          }
+      }
+    }
+//todo 数据判断
     if (snapshot.hasData) {
-      print("logsnapshot.hasData-------------->");
+      isfirstRefush = false;
       _printOrderEntity = snapshot.data;
       _printOrderEntity.result?.forEach((value) {
         _listPrintOrderDataResult.add(value);
       });
-      print("log_listPrintOrderDataResult${_listPrintOrderDataResult.length}");
+      if (_listPrintOrderDataResult.length >= _printOrderEntity.total) {
+        _controller.finishLoad(success: true, noMore: true);
+      }
       return EasyRefresh.custom(
         controller: _controller,
         header: BallMyPulseHeader(),
@@ -97,8 +131,8 @@ class PrintOrderListItemPageState extends State<PrintOrderListItemPage> {
           await Future.delayed(Duration(seconds: 2), () {
             setState(() {
               onRefreshData();
+              isfirstRefush = false;
             });
-            _controller.resetLoadState();
           });
         },
         onLoad: () async {
@@ -106,10 +140,6 @@ class PrintOrderListItemPageState extends State<PrintOrderListItemPage> {
             setState(() {
               onLoadData();
             });
-            _controller.finishLoad(
-                // ignore: null_aware_before_operator
-                noMore: _listPrintOrderDataResult.length >=
-                    _printOrderEntity.total);
           });
         },
         slivers: <Widget>[
@@ -123,20 +153,20 @@ class PrintOrderListItemPageState extends State<PrintOrderListItemPage> {
           ),
         ],
       );
-    } else {
-      return loadingCellBox();
     }
   }
 
   ///定义的data基类接受
   Future<PrintOrderEntity> _requestOrderList() async {
-    String tempSearch = "";
-    if (context == null) {
-      tempSearch =
-          ProviderUtils.Pro<PrintOrderListProvide>(context)?.getSearchOen();
+    if (widget.page == 1) {
+      _listPrintOrderDataResult.clear();
+    }
+    String oem = "";
+    if (mounted) {
+      oem = ProviderUtils.Pro<PrintOrderListProvide>(context)?.getSearchOen();
     }
     return await DioRequestControl().printOrderData(
-        tempSearch, widget.page.toString(), "5", null,
+        oem, widget.page.toString(), "10", null,
         printError: (value) {});
   }
 

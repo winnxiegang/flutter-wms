@@ -72,7 +72,7 @@ class ProviderUtils {
     if (context != null) {
       return Provider.of<T>(context, listen: refushListen);
     }
-    PrintUtils.printMsg("------->${T}的buildContext为空");
+    PrintUtils.printMsg("----------------->${T}的buildContext为空");
     return null;
   }
 }

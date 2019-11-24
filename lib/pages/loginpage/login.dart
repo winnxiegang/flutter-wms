@@ -57,7 +57,7 @@ class LoginPageState extends State<LoginPage> {
 
   Future _requestLogin() async {
     DioRequestControl()
-        .logion(widget.usePhone, widget.useWorld, context,
+        .logion(widget.usePhone, widget.useWorld, context,backdiss: true,
             printError: (value) {})
         .then((value) {
       ProviderUtils.Pro<UseStatusProvide>(context, refushListen: true)

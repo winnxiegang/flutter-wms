@@ -91,19 +91,37 @@ Widget cachedNetworkImageDefaultPlaceHolder({
     );
 
 /// 列表底部，loading 状态
-Widget loadingCellBox() => Container(
-      padding: const EdgeInsets.all(16.0),
-      alignment: Alignment.center,
-      child: SizedBox(
-        width: 40.0,
-        height: 40.0,
-        child: CircularProgressIndicator(
-          strokeWidth: 2.0,
-          backgroundColor: CommonColors.mainColor,
-          valueColor: new AlwaysStoppedAnimation<Color>(Colors.yellowAccent),
-        ),
+Widget loadingCellBox() {
+  return Container(
+    padding: const EdgeInsets.all(16.0),
+    alignment: Alignment.center,
+    child: SizedBox(
+      width: 40.0,
+      height: 40.0,
+      child: CircularProgressIndicator(
+        strokeWidth: 2.0,
+        backgroundColor: CommonColors.mainColor,
+        valueColor: new AlwaysStoppedAnimation<Color>(Colors.yellowAccent),
       ),
-    );
+    ),
+  );
+}
+
+/// 请求异常 点击重试
+Widget loadingErrorClick(VoidCallback onclick) {
+  return InkWell(
+    onTap: () {
+      onclick();
+    },
+    child: Container(
+      alignment: Alignment.center,
+      child: Text(
+        '网络连接异常,点击重试',
+        textAlign: TextAlign.center,
+      ),
+    ),
+  );
+}
 
 /// 列表底部，没有更多 状态
 Widget noDataCellBox({String message = '没有更多了'}) => Container(
