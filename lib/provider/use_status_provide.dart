@@ -16,7 +16,7 @@ class UseStatusProvide extends ChangeNotifier {
       Global.user.token = token;
     }
     if (useName != null && useName.isNotEmpty) {
-      Global.user.setUserName = useName;
+      Global.user.userName = useName;
     }
     if (useId != null && useId.isNotEmpty) {
       Global.user.setUserId = useId;

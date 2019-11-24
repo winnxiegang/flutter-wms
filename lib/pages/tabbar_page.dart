@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_wms/provider/currentIndex.dart';
 import 'package:flutter_wms/utils/tire_export.dart';
 import 'package:provider/provider.dart';
@@ -14,10 +13,7 @@ class TabbarPage extends StatelessWidget {
     BottomNavigationBarItem(
         icon: Icon(CupertinoIcons.profile_circled), title: Text('我的')),
   ];
-  final List<Widget> tabBodies = [
-    HomePage(),
-    MineInformationPage()
-  ];
+  final List<Widget> tabBodies = [HomePage(), MineInformationPage()];
   DateTime lastPopTime;
 
   @override
@@ -55,17 +51,19 @@ class TabbarPage extends StatelessWidget {
             actions: <Widget>[
               new FlatButton(
                 onPressed: () => Navigator.of(context).pop(false),
-                child: new Text('取消',
-                  style: TextStyle(color: Colors.black),),
+                child: new Text(
+                  '取消',
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
               new FlatButton(
                 onPressed: () async => {
                   Navigator.of(context).pop(true),
-                  await SystemChannels.platform
-                      .invokeMethod('SystemNavigator.pop'),
                 },
-                child: new Text('确定',
-                  style: TextStyle(color: Colors.black),),
+                child: new Text(
+                  '确定',
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
             ],
           ),

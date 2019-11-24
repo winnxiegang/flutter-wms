@@ -63,7 +63,8 @@ class LoginPageState extends State<LoginPage> {
       ProviderUtils.Pro<UseStatusProvide>(context, refushListen: true)
           ?.loginStatus(value.result,
               useName: value.username, useId: value.deptId.toString());
-      //Routes.router.navigateTo(context, Routes.root, transition: TransitionType.native, replace: true);
+      Routes.router.navigateTo(context, Routes.root,
+          transition: TransitionType.native, replace: true);
     });
   }
 

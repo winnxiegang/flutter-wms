@@ -64,7 +64,7 @@ class MineInformationPageState extends State<MineInformationPage> {
           Padding(
             padding: EdgeInsets.fromLTRB(
                 0, ScreenUtil().setHeight(20), 0, ScreenUtil().setHeight(20)),
-            child: Text( Global.user.userName??''),
+            child: Text(Global.loginStatus.userName ??''),
           ),
         ],
       ),
@@ -137,8 +137,9 @@ class MineInformationPageState extends State<MineInformationPage> {
               new FlatButton(
                 onPressed: () async => {
                   ProviderUtils.Pro<UseStatusProvide>(context).logoutStatus(),
-                  Routes.router
-                      .navigateTo(context, Routes.login, replace: true),
+                  //clearStack清理所有栈
+                  Routes.router.navigateTo(context, Routes.login,
+                      replace: true, clearStack: true),
                 },
                 child: new Text(
                   '确定',
