@@ -57,12 +57,11 @@ class LoginPageState extends State<LoginPage> {
 
   Future _requestLogin() async {
     DioRequestControl()
-        .logion(widget.usePhone, widget.useWorld, context,backdiss: true,
-            printError: (value) {})
+        .logion(widget.usePhone, widget.useWorld, context,
+            backdiss: true, printError: (value) {})
         .then((value) {
       ProviderUtils.Pro<UseStatusProvide>(context, refushListen: true)
-          ?.loginStatus(value.result,
-              useName: value.username, useId: value.deptId.toString());
+          ?.loginStatus(value.result, value.username, value.deptId.toString());
       Routes.router.navigateTo(context, Routes.root,
           transition: TransitionType.native, replace: true);
     });

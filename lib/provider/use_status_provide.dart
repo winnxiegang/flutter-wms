@@ -3,23 +3,18 @@ import 'package:flutter_wms/common/app_global.dart';
 
 class UseStatusProvide extends ChangeNotifier {
   /// 是否登录
-  bool get isLogin => Global.user.token != null && Global.user.token.isNotEmpty;
+  bool get isLogin =>
+      Global.user.getToken() != null && Global.user.getToken().isNotEmpty;
 
   /// 是否登录
-  String get userName => Global.user.userName ?? '';
+  String get userName => Global.user.getUserName() ?? '';
 
   /// 是否登录
-  String get userId => Global.user.userId ?? '';
+  String get userId => Global.user.getUserId() ?? '';
 
-  void loginStatus(String token, {String useName, String useId}) {
+  void loginStatus(String token, String useName, String useId) {
     if (token != null && token.isNotEmpty) {
-      Global.user.token = token;
-    }
-    if (useName != null && useName.isNotEmpty) {
-      Global.user.userName = useName;
-    }
-    if (useId != null && useId.isNotEmpty) {
-      Global.user.setUserId = useId;
+      Global.user.setUserData(token, useName, useId);
     }
     notifyListeners();
   }
@@ -30,6 +25,7 @@ class UseStatusProvide extends ChangeNotifier {
     Global.user.userName = "";
     Global.user.userId = "";
     notifyListeners();
+    Global.saveUserProfileInfo();
   }
 
   void notify() {

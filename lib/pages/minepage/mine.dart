@@ -64,7 +64,7 @@ class MineInformationPageState extends State<MineInformationPage> {
           Padding(
             padding: EdgeInsets.fromLTRB(
                 0, ScreenUtil().setHeight(20), 0, ScreenUtil().setHeight(20)),
-            child: Text(Global.loginStatus.userName ??''),
+            child: Text(Global.useStatusStatus.userName ??''),
           ),
         ],
       ),

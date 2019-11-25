@@ -10,22 +10,21 @@ class Global {
   static SharedPreferences _prefs;
 
   static bool get isDebug => !bool.fromEnvironment("dart.vm.product");
-  static UseStatusProvide loginStatus;
+  static UseStatusProvide useStatusStatus;
 
   static UserInfo user;
-
-  static String cartCookie = '';
 
   /// 初始化全局信息，会在APP启动时执行
   static Future init() async {
     _prefs = await SharedPreferences.getInstance();
     API_DOMAIN = _prefs.getString("api_domain") ?? API_DOMAIN;
 
-    loginStatus = UseStatusProvide();
+    useStatusStatus = UseStatusProvide();
 
     user = UserInfo();
 
-    user.token = _prefs.getString('token') ?? '';
+    user.setUserData(_prefs.getString('token') ?? '',
+        _prefs.getString('userName') ?? '', _prefs.getString('userId') ?? '');
   }
 
   static String getBaseUrl() {

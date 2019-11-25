@@ -20,7 +20,7 @@ void main() {
       MultiProvider(
         providers: <SingleChildCloneableWidget>[
           ChangeNotifierProvider.value(value: CurrentIndexProvide()),
-          ChangeNotifierProvider.value(value: Global.loginStatus),
+          ChangeNotifierProvider.value(value: Global.useStatusStatus),
           ChangeNotifierProvider.value(value: LoginProvide()),
           ChangeNotifierProvider.value(value: PrintOrderListProvide()),
         ],

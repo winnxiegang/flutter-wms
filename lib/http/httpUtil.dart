@@ -51,7 +51,7 @@ class HttpUtil {
         "content-type": "application/json",
         "appId": "15",
         "platformId": "2",
-        "token": Global.user.token,
+        "token": Global.user.getToken(),
         "timestamp": currentTime,
         "sign": "FF6ED57983248E3701EE97F3F23A41F9",
       },
