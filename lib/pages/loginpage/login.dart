@@ -11,9 +11,6 @@ import '../loginpage/login_inputitem_page.dart';
 import 'login_chosevitem_page.dart';
 
 class LoginPage extends StatefulWidget {
-  String useWorld = "";
-  String usePhone = "";
-
   @override
   LoginPageState createState() => new LoginPageState();
 }
@@ -53,20 +50,6 @@ class LoginPageState extends State<LoginPage> {
         ));
   }
 
-  /// Login网路请求
-
-  Future _requestLogin() async {
-    DioRequestControl()
-        .logion(widget.usePhone, widget.useWorld, context,
-            backdiss: true, printError: (value) {})
-        .then((value) {
-      ProviderUtils.Pro<UseStatusProvide>(context, refushListen: true)
-          ?.loginStatus(value.result, value.username, value.deptId.toString());
-      Routes.router.navigateTo(context, Routes.root,
-          transition: TransitionType.native, replace: true);
-    });
-  }
-
   /// LoginSumbit组件
   Widget _loginSumbitWidget() {
     return Container(
@@ -76,14 +59,7 @@ class LoginPageState extends State<LoginPage> {
       child: ButtonUtils.raisedButtonUtils(
           borderRadius: 5,
           onClick: () {
-            widget.useWorld =
-                ProviderUtils.Pro<LoginProvide>(context)?.getUseWorld();
-            widget.usePhone =
-                ProviderUtils.Pro<LoginProvide>(context)?.getUsePhone();
-            if (InputCheckUtils.isCanLogin(
-                context, widget.usePhone, widget.useWorld)) {
-              this._requestLogin();
-            }
+            ProviderUtils.Pro<LoginProvide>(context)?.requestLogin(context);
           }),
     );
   }

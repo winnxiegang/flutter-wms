@@ -259,7 +259,7 @@ class LogsInterceptors extends InterceptorsWrapper {
   @override
   onResponse(Response response) {
     print("log返回结果${response.data}");
- //   _printDataStr("log返回结果",response.data);
+  _printDataStr("log返回结果",response.data);
     return response; // continue
   }
 
@@ -273,13 +273,13 @@ class LogsInterceptors extends InterceptorsWrapper {
     String da = value.toString();
     while (da.isNotEmpty) {
       print("$tag:   " + da);
-//      if (da.length > 512) {
-//        print("$tag:   " + da.substring(0, 512));
-//        da = da.substring(512, da.length);
-//      } else {
-//        print("$tag:   " + da);
-//        da = "";
-//      }
+      if (da.length > 512) {
+        print("$tag:   " + da.substring(0, 512));
+        da = da.substring(512, da.length);
+      } else {
+        print("$tag:   " + da);
+        da = "";
+      }
     }
   }
 

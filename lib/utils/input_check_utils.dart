@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 
-
 class InputCheckUtils {
   static bool isCanLogin(
       BuildContext context, String userName, String password) {
@@ -26,6 +25,7 @@ class InputCheckUtils {
 
     return true;
   }
+
   ///提交忘记密码
   static bool isCheckForgetPassword(
       BuildContext context, String userPhone, String userCode) {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wms/pages/printpage/printorder_head_item.dart';
 import 'package:flutter_wms/pages/printpage/printorder_list_item.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_wms/utils/tire_export.dart';
 //18800005555
 class PrintOrderPage extends StatefulWidget {

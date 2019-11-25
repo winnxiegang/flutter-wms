@@ -69,10 +69,15 @@ class PrintUtils {
 
 class ProviderUtils {
   static T Pro<T>(BuildContext context, {bool refushListen = true}) {
-    if (context != null) {
-      return Provider.of<T>(context, listen: refushListen);
+    try {
+      if (context != null) {
+        return Provider.of<T>(context, listen: refushListen);
+      }
+      PrintUtils.printMsg("----------------->${T}的buildContext为空");
+      return null;
+    } catch (e) {
+      print(e.toString());
+      PrintUtils.printMsg("----------------->${ e.toString()}");
     }
-    PrintUtils.printMsg("----------------->${T}的buildContext为空");
-    return null;
   }
 }
