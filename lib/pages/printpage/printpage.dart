@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wms/pages/printpage/printorder_head_item.dart';
 import 'package:flutter_wms/pages/printpage/printorder_list_item.dart';
 import 'package:flutter_wms/utils/tire_export.dart';
+
 //18800005555
 class PrintOrderPage extends StatefulWidget {
   const PrintOrderPage({
@@ -29,13 +30,12 @@ class PrintOrderPageState extends State<PrintOrderPage> {
     return Scaffold(
       appBar: CommonAppBar.buildAppBar("打印", mBackContext: context),
       body: Container(
+        height: double.infinity,
         alignment: Alignment.topCenter,
-        child: Column(
-          children: <Widget>[
-            PrintOrderHeadItemPage(),
-            PrintOrderListItemPage(),
-          ],
-        ),
+        child: Column(children: <Widget>[
+          PrintOrderHeadItemPage(),
+          PrintOrderListItemPage(),
+        ]),
       ),
     );
   }

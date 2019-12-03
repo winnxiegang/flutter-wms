@@ -1,51 +1,177 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_wms/router/routes.dart';
-class TestPage extends StatefulWidget {
-  @override
-  TestPageState createState() => new TestPageState();
-}
 
-Timer timer;
-
-class TestPageState extends State<TestPage> {
+//class LayoutDemo extends StatelessWidget {
+//  @override
+//  Widget build(BuildContext context) {
+//    return new Scaffold(
+//      appBar: new AppBar(
+//        title: new Text('水平方向布局'),
+//      ),
+//      body: new Row(
+//          children: <Widget>[
+//            new RaisedButton(
+//              onPressed: () {
+//                print('点击红色按钮事件');
+//              },
+//              color: const Color(0xffcc0000),
+//              child: new Text('红色按钮'),
+//            ),
+//            new Expanded(
+//              flex: 1,
+//              child: new RaisedButton(
+//                onPressed: () {
+//                  print('点击黄色按钮事件222');
+//                },
+//                color: Colors.green,
+//                child: new Text('黄色按钮1222'),
+//              ),
+//            ),
+//            new RaisedButton(
+//              onPressed: () {
+//                print('点击粉色按钮事件');
+//              },
+//              color: const Color(0xffea9999),
+//              child: new Text('粉色按钮'),
+//            ),
+//          ]
+//      ),
+//    );
+//  }
+//}
+class LayoutDemo2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    //这里面实现需要的事件，方法类似以下（防止context为空报错）
-    timer = new Timer(const Duration(milliseconds: 3000), () {
-      Routes.router.navigateTo(context, Routes.root, replace: true);
-    });
+    return new Scaffold(
+        appBar: new AppBar(
+          title: new Text('水平方向布局'),
+        ),
+        body: Container(
+            color: Colors.black,
+            child: Column(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.all(5.0),
+                      child: Text("Flexible1"),
+                      color: Colors.blue,
+                    ),
+                    Flexible(
+                      flex: 10,
+                      child: Container(
+                        margin: EdgeInsets.all(5.0),
+                        child: Text("Flexible"),
+                        color: Colors.blue,
+                      ),
+                    ),
+                    Flexible(
+                      flex: 20,
+                      child: Container(
+                        margin: EdgeInsets.all(5.0),
+                        child: Text("Flexible11111111111111111111111111111111"),
+                        color: Colors.blue,
+                      ),
+                    ),
+                    Flexible(
+                      flex: 10,
+                      child: Container(
+                        margin: EdgeInsets.all(5.0),
+                        child: Text("Flexible"),
+                        color: Colors.blue,
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(5.0),
+                      child: Text("Flexible1"),
+                      color: Colors.blue,
+                    ),
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.all(5.0),
+                      child: Text("Flexible1"),
+                      color: Colors.blue,
+                    ),
+                    Flexible(
+                      flex: 1,
+                      child: Container(
+                        child: Text("Flexible2"),
+                        color: Colors.blue,
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(5.0),
+                      child: Text("Flexible3"),
+                      color: Colors.blue,
+                    ),
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.all(5.0),
+                      child: Text("Expanded1"),
+                      color: Colors.blue,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        child: Text("Expanded2"),
+                        color: Colors.blue,
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(5.0),
+                      child: Text("Expanded3"),
+                      color: Colors.blue,
+                    )
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        margin: EdgeInsets.all(5.0),
+                        child: Text("Expanded"),
+                        color: Colors.blue,
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        margin: EdgeInsets.all(5.0),
+                        child: Text("Expanded"),
+                        color: Colors.blue,
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        margin: EdgeInsets.all(5.0),
+                        child: Text("Expanded"),
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+        ));
+  }
+}
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('使用备注'),
-        //这里面可以放组件，组件里的点击项实现触发事件。
+void main() {
+  runApp(
+    new MaterialApp(
+      title: 'Flutter教程',
+      home: Column(
+        children: <Widget>[
+          LayoutDemo2(),
+        ],
       ),
-    );
-  }
-
-  @override
-  void initState() {
-    // TODO: 这里启动此页面，仅仅运行一次，
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    // TODO: 这里销毁此页面 类似于Android的 onDestroy，
-    super.dispose();
-  }
-
-  @override
-  void didUpdateWidget(TestPage oldWidget) {
-    // TODO:  即上级组件状态发生变化时会触发子widget执行didUpdateWidget，
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
-  void didChangeDependencies() {
-    // TODO:这里多次执行类似于Android的 onresume，
-    super.didChangeDependencies();
-  }
+    ),
+  );
 }

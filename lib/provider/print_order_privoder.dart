@@ -3,7 +3,6 @@ import 'package:flutter_wms/utils/tire_export.dart';
 
 class PrintOrderListProvide extends ChangeNotifier {
   String searchOen = "";
-  int page = 1;
   bool isNeedLoadCircl = true; //动态判断是否需要加载圆圈
 
   String getSearchOen() => searchOen ?? "";
@@ -20,16 +19,8 @@ class PrintOrderListProvide extends ChangeNotifier {
     notifyListeners();
   }
 
-  originPage() {
-    page = 1;
-  }
-
-  addPage() {
-    page++;
-  }
-
   //上拉加载列表
-  addGoodsList(List<PrintOrderDataResult> list) {
+  addGoodsList(List<PrintOrderDataResult> list, int page) {
     if (list == null) {
       return;
     }

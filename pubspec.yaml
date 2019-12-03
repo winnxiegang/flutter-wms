@@ -40,6 +40,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   log4d: ^1.0.4
+  flutter_swiper: ^1.1.4
+  pull_to_refresh: ^1.5.7
 dev_dependencies:
   flutter_test:
     sdk: flutter

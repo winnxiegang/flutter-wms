@@ -103,7 +103,6 @@ class HomeGridItem extends StatelessWidget {
     if (index == 0) {
       Routes.router.navigateTo(context, Routes.printOrder);
     } else if (index == 1) {
-      //Routes.router.navigateTo(context, Routes.login, replace: true);
     } else if (index == 2) {
       // Routes.router.navigateTo(context, Routes.login, replace: true);
     } else if (index == 3) {

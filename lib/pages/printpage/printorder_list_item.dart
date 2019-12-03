@@ -22,18 +22,14 @@ class PrintOrderListItemPageState extends State<PrintOrderListItemPage> {
   // 总数
   EasyRefreshController _controller;
   Future<PrintOrderEntity> _futureBuildOrderList;
+  List<PrintOrderDataResult> _list;
+  int currentPage = 1;
 
   @override
   void initState() {
-    super.initState();
     _controller = EasyRefreshController();
-  }
-
-  ///界面数据更改后 操作事情
-  @override
-  void didChangeDependencies() {
     _futureBuildOrderList = _requestOrderList();
-    super.didChangeDependencies();
+    super.initState();
   }
 
   @override
@@ -60,14 +56,14 @@ class PrintOrderListItemPageState extends State<PrintOrderListItemPage> {
 
   void onRefreshData() {
     setState(() {
-      ProviderUtils.Pro<PrintOrderListProvide>(context).originPage();
+      currentPage = 1;
       _futureBuildOrderList = _requestOrderList();
     });
   }
 
   void onLoadData() {
     setState(() {
-      ProviderUtils.Pro<PrintOrderListProvide>(context).addPage();
+      currentPage++;
       _futureBuildOrderList = _requestOrderList();
     });
   }
@@ -106,8 +102,15 @@ class PrintOrderListItemPageState extends State<PrintOrderListItemPage> {
     }
 //todo 数据判断
     if (snapshot.hasData) {
-      ProviderUtils.Pro<PrintOrderListProvide>(context)
-          ?.addGoodsList(snapshot.data.result);
+      if (snapshot.data?.result?.length == 0) {
+        return noDataText();
+      }
+      _list = snapshot.data.result;
+      Future.delayed(Duration.zero).then((e) {
+        ProviderUtils.Pro<PrintOrderListProvide>(context)
+            ?.addGoodsList(_list, currentPage);
+      });
+
       if (ProviderUtils.Pro<PrintOrderListProvide>(context)
           .isLoadEnd(snapshot.data.total)) {
         _controller.finishLoad(success: true, noMore: true);
@@ -155,7 +158,7 @@ class PrintOrderListItemPageState extends State<PrintOrderListItemPage> {
   Future<PrintOrderEntity> _requestOrderList() async {
     return await DioRequestControl().printOrderData(
         ProviderUtils.Pro<PrintOrderListProvide>(context)?.searchOen,
-        ProviderUtils.Pro<PrintOrderListProvide>(context)?.page.toString(),
+        currentPage.toString(),
         "5",
         null,
         printError: (value) {});

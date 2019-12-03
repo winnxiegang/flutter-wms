@@ -44,7 +44,6 @@ android {
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-
     signingConfigs {
         release {
             keyAlias 'wms'
@@ -60,6 +59,7 @@ android {
         release {
             //Zipalign优化
             zipAlignEnabled true
+            //minifyEnabled true
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.release
         }
@@ -67,11 +67,13 @@ android {
         debug {
             //Zipalign优化
             zipAlignEnabled false
+          //  minifyEnabled false
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.release
         }
     }
 }
+
 
 flutter {
     source '../..'

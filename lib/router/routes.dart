@@ -8,6 +8,7 @@ class Routes {
   static String login = "/login";
   static String confirmNewPassword = "/confirmNewPassword";
   static String printOrder = "/printOrder";
+
   static void configureRoutes(Router router) {
     router.define(root, handler: rootHandler);
     router.define(login, handler: loginHandler);
