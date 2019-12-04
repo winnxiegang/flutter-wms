@@ -32,11 +32,11 @@ class DuanziPageState extends State<DuanziPage> {
     return Consumer<DuanZiProvide>(builder: (context, DuanZiProvide data, child) {
       bool videoClick = data.isVideoClick;
       return Container(
-        color: Colors.white,
+        color: CommonColors.grayBg,
         child: Column(
           children: <Widget>[
             Container(
-              decoration: BoxDecoration(color: Colors.black12, borderRadius: BorderRadius.circular(1)),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(1)),
               child: Row(
                 children: <Widget>[
                   Padding(

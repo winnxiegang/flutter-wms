@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wms/common/page_common.dart';
 import 'package:flutter_wms/models/duanzi_entity.dart';
@@ -54,36 +55,38 @@ class HanppyListTextPageState extends State<HanppyListTextPage> {
           /**
               SmartRefresher 嵌套子布局使用  ListView 等view 一定要限制子布局View 的滑动问题
            */
-          return Expanded(
-            child: SmartRefresher(
-              enablePullUp: true,
-              enablePullDown: true,
-              controller: _refreshController,
-              header: ClassicHeader(
-                idleText: "下拉中",
-                releaseText: "松手加载",
-                refreshingText: "加载中",
-                completeText: "加载完成",
+          return Container(
+            child: Expanded(
+              child: SmartRefresher(
+                enablePullUp: true,
+                enablePullDown: true,
+                controller: _refreshController,
+                header: ClassicHeader(
+                  idleText: "下拉中",
+                  releaseText: "松手加载",
+                  refreshingText: "加载中",
+                  completeText: "加载完成",
+                ),
+                footer: ClassicFooter(
+                  idleText: "加载完成",
+                  noDataText: "没有更多",
+                  loadStyle: LoadStyle.ShowAlways,
+                  loadingText: "加载中",
+                ),
+                onRefresh: () {
+                  Future.delayed(Duration(milliseconds: 2000), () {
+                    onRefreshData();
+                    _refreshController.refreshCompleted();
+                  });
+                },
+                onLoading: () async {
+                  Future.delayed(Duration(milliseconds: 2000), () {
+                    onLoadData();
+                    _refreshController.loadComplete();
+                  });
+                },
+                child: ListView.builder(itemBuilder: _listItemWidget, itemCount: _goodsList.length),
               ),
-              footer: ClassicFooter(
-                idleText: "加载完成",
-                noDataText: "没有更多",
-                loadStyle: LoadStyle.ShowAlways,
-                loadingText: "加载中",
-              ),
-              onRefresh: () {
-                Future.delayed(Duration(milliseconds: 2000), () {
-                  onRefreshData();
-                  _refreshController.refreshCompleted();
-                });
-              },
-              onLoading: () async {
-                Future.delayed(Duration(milliseconds: 2000), () {
-                  onLoadData();
-                  _refreshController.loadComplete();
-                });
-              },
-              child: ListView.builder(itemBuilder: _listItemWidget, itemCount: _goodsList.length),
             ),
           );
         });
@@ -112,29 +115,114 @@ class HanppyListTextPageState extends State<HanppyListTextPage> {
   }
 
   Widget _listItemWidget(BuildContext context, int index) {
-    return InkWell(
-      child: Column(
-        children: <Widget>[
-          SizedBox(
-            height: 10,
-          ),
-          Row(
+    return Column(
+      children: <Widget>[
+        Container(
+          color: Colors.white,
+          padding: const EdgeInsets.all(16),
+          child: Column(
             children: <Widget>[
-              Text(
-                'OE码:',
-                style: TextStyle(color: Color(0xFF888888), fontSize: ScreenUtil().setHeight(16)),
+              Row(
+                children: <Widget>[
+                  ClipOval(
+                    child: Image.network(
+                      _goodsList[index].header ?? "",
+                      height: ScreenUtil().setHeight(37),
+                      width: ScreenUtil().setHeight(37),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  SizedBox(width: ScreenUtil().setHeight(10)),
+                  Text(
+                    _goodsList[index].name ?? "",
+                    style: TextStyle(color: Color(0xFF333333), fontSize: ScreenUtil().setHeight(18)),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Row(
+                      children: <Widget>[
+                        Icon(
+                          Icons.favorite_border,
+                          color: Colors.yellow,
+                          size: ScreenUtil().setHeight(25),
+                        ),
+                        SizedBox(
+                          width: ScreenUtil().setHeight(5),
+                        ),
+                        Text(_goodsList[index].up ?? "")
+                      ],
+                    ),
+                  )
+                ],
               ),
-              SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  _goodsList[index].text,
-                  style: TextStyle(color: Color(0xFF333333), fontSize: ScreenUtil().setHeight(22)),
-                ),
-              )
+              SizedBox(height: ScreenUtil().setHeight(10)),
+              Text(
+                _goodsList[index].text ?? "",
+                style: TextStyle(color: Color(0xFF333333), fontSize: ScreenUtil().setHeight(18)),
+              ),
+              SizedBox(height: ScreenUtil().setHeight(10)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.arrow_upward,
+                        color: Colors.yellow,
+                        size: ScreenUtil().setHeight(25),
+                      ),
+                      SizedBox(
+                        width: ScreenUtil().setHeight(5),
+                      ),
+                      Text(_goodsList[index].up ?? "")
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.arrow_downward,
+                        color: Colors.yellow,
+                        size: ScreenUtil().setHeight(25),
+                      ),
+                      SizedBox(
+                        width: ScreenUtil().setHeight(5),
+                      ),
+                      Text(_goodsList[index].down ?? "")
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.sms,
+                        color: Colors.yellow,
+                        size: ScreenUtil().setHeight(25),
+                      ),
+                      SizedBox(
+                        width: ScreenUtil().setHeight(5),
+                      ),
+                      Text(_goodsList[index].down ?? "")
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.share,
+                        color: Colors.yellow,
+                        size: ScreenUtil().setHeight(25),
+                      ),
+                      SizedBox(
+                        width: ScreenUtil().setHeight(5),
+                      ),
+                      Text(_goodsList[index].down ?? "")
+                    ],
+                  )
+                ],
+              ),
             ],
           ),
-        ],
-      ),
+        ),
+        CommonDivider.buildDivider(ScreenUtil().setHeight(10)),
+      ],
     );
   }
 }
