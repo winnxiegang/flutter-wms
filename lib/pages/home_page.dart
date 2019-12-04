@@ -4,7 +4,6 @@ import 'package:flutter_wms/models/post.dart';
 import 'package:flutter_wms/utils/tire_export.dart';
 
 import 'duanzipage/duanzi.dart';
-import 'duanzipage/hanppy_list_page.dart';
 
 //娱乐
 class HobllyPage extends StatefulWidget {
@@ -50,8 +49,8 @@ class HobllyPageState extends State<HobllyPage> with SingleTickerProviderStateMi
     return Scaffold(
       backgroundColor: Colors.black12, //统一背景
       appBar: AppBar(
+        elevation: 0.5,
         backgroundColor: Colors.white,
-        elevation: 0,
         title: TabBar(
           controller: controller,
           //可以和TabBarView使用同一个TabController

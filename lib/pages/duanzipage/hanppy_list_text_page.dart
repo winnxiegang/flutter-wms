@@ -9,16 +9,16 @@ import 'package:flutter_wms/utils/tire_export.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class HanppyListPage extends StatefulWidget {
-  const HanppyListPage({
+class HanppyListTextPage extends StatefulWidget {
+  const HanppyListTextPage({
     Key key,
   }) : super(key: key);
 
   @override
-  HanppyListPageState createState() => new HanppyListPageState();
+  HanppyListTextPageState createState() => new HanppyListTextPageState();
 }
 
-class HanppyListPageState extends State<HanppyListPage> {
+class HanppyListTextPageState extends State<HanppyListTextPage> {
   List<DuanziResult> _goodsList = [];
   Future _futureCouponList;
   int currentPage = 1;
@@ -38,13 +38,13 @@ class HanppyListPageState extends State<HanppyListPage> {
 
   @override
   Widget build(BuildContext context) {
+    /**
+     * FutureBuilder 里面不能进行list的 add或者addall 方法
+     */
     return FutureBuilder<DuanziEntity>(
         future: _futureCouponList,
         builder: (context, data) {
           if (data.hasData) {
-            Future.delayed(Duration.zero, () {
-              Provider.of<DuanZiProvide>(context).addHappyList(data.data.result, currentPage);
-            });
             _goodsList = Provider.of<DuanZiProvide>(context).listHappyItem;
             if (_goodsList.length == 0) return noDataText();
             if (_goodsList.length != 0 && data.data.result.length == 0) _refreshController.loadNoData();
@@ -66,7 +66,7 @@ class HanppyListPageState extends State<HanppyListPage> {
                 completeText: "加载完成",
               ),
               footer: ClassicFooter(
-                idleText: "上拉加载更多",
+                idleText: "加载完成",
                 noDataText: "没有更多",
                 loadStyle: LoadStyle.ShowAlways,
                 loadingText: "加载中",
@@ -92,8 +92,10 @@ class HanppyListPageState extends State<HanppyListPage> {
   ///定义的data基类接受
   Future<DuanziEntity> _requestHappyList() async {
     var path = "https://api.apiopen.top/getJoke?";
-    var params = {"page": currentPage.toString(), "count": "10", "type": "video"};
+    var params = {"page": currentPage.toString(), "count": "10", "type": "text"};
     Response response = await Dio().post(path, queryParameters: params);
+    DuanziEntity duanziEntity = DuanziEntity.fromJson(json.decode(response.toString()));
+    Provider.of<DuanZiProvide>(context).addHappyList(duanziEntity.result, currentPage);
     return DuanziEntity.fromJson(json.decode(response.toString()));
   }
 
