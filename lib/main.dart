@@ -1,6 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_wms/provider/duanzi_provide.dart';
 import 'package:flutter_wms/provider/print_order_privoder.dart';
 import 'package:flutter_wms/utils/tire_export.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,7 @@ void main() {
           ChangeNotifierProvider.value(value: Global.useStatusStatus),
           ChangeNotifierProvider.value(value: LoginProvide()),
           ChangeNotifierProvider.value(value: PrintOrderListProvide()),
+          ChangeNotifierProvider.value(value: DuanZiProvide()),
         ],
         child: MyApp(),
       ),
@@ -37,22 +39,17 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
             debugShowCheckedModeBanner: false,
             onGenerateRoute: Routes.router.generator,
-            theme: ThemeData(primaryColor: CommonColors.mainColor),
-            localizationsDelegates: [
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate
-            ],
+            theme: ThemeData(
+              primaryColor: CommonColors.mainColor,
+              primarySwatch: Colors.amber,
+            ),
+            localizationsDelegates: [GlobalMaterialLocalizations.delegate, GlobalWidgetsLocalizations.delegate],
             locale: const Locale("en", "US"),
-            supportedLocales: [
-              const Locale("zh", "CH"),
-              const Locale("en", "US")
-            ],
+            supportedLocales: [const Locale("zh", "CH"), const Locale("en", "US")],
             home: Consumer<UseStatusProvide>(builder: (context, status, child) {
               if (status.isLogin) {
-                PrintUtils.printMsg("------->TabbarPageMyApp的运作中");
                 return TabbarPage();
               } else
-                PrintUtils.printMsg("------->LoginPageMyApp的运作中");
               return LoginPage();
             })));
   }

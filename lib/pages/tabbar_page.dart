@@ -7,13 +7,16 @@ import 'package:provider/provider.dart';
 import 'home_page.dart';
 import 'minepage/mine.dart';
 
+// ignore: must_be_immutable
 class TabbarPage extends StatelessWidget {
   final List<BottomNavigationBarItem> bottomTabs = [
-    BottomNavigationBarItem(icon: Icon(CupertinoIcons.home), title: Text('首页')),
-    BottomNavigationBarItem(
-        icon: Icon(CupertinoIcons.profile_circled), title: Text('我的')),
+    BottomNavigationBarItem(icon: Icon(CupertinoIcons.home), title: Text('娱乐')),
+    BottomNavigationBarItem(icon: Icon(CupertinoIcons.profile_circled), title: Text('我的')),
   ];
-  final List<Widget> tabBodies = [HomePage(), MineInformationPage()];
+  final List<Widget> tabBodies = [
+    HobllyPage(),
+    MineInformationPage(),
+  ];
   DateTime lastPopTime;
 
   @override

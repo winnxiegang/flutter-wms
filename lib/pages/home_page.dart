@@ -3,41 +3,83 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wms/models/post.dart';
 import 'package:flutter_wms/utils/tire_export.dart';
 
-import '../utils/common_utils.dart';
+import 'duanzipage/duanzi.dart';
+import 'duanzipage/hanppy_list_page.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({
+//娱乐
+class HobllyPage extends StatefulWidget {
+  const HobllyPage({
     Key key,
   }) : super(key: key);
 
   @override
-  HomePageState createState() => new HomePageState();
+  HobllyPageState createState() => new HobllyPageState();
 }
 
-class HomePageState extends State<HomePage> {
+class HobllyPageState extends State<HobllyPage> with SingleTickerProviderStateMixin {
+  TabController controller;
+  List tabs = <Tab>[];
+
   @override
   void initState() {
     super.initState();
+    tabs = <Tab>[
+      Tab(
+        text: "内涵段子",
+      ),
+      Tab(
+        text: "快递查询",
+      ),
+      Tab(
+        text: "公交查询",
+      ),
+    ];
+
+    //initialIndex初始选中第几个
+    controller = TabController(initialIndex: 0, length: tabs.length, vsync: this);
   }
 
   @override
   void dispose() {
     super.dispose();
+    controller.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CommonAppBar.buildAppBar("首页"),
       backgroundColor: Colors.black12, //统一背景
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverSafeArea(
-            sliver: SliverPadding(
-              padding: EdgeInsets.all(8.0),
-              sliver: HomeGridItem(),
-            ),
-          )
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: TabBar(
+          controller: controller,
+          //可以和TabBarView使用同一个TabController
+          tabs: tabs,
+          isScrollable: true,
+          indicatorColor: Colors.transparent,
+          indicatorWeight: 1,
+          indicatorSize: TabBarIndicatorSize.tab,
+          indicatorPadding: EdgeInsets.only(bottom: 10.0),
+          //底部指示器和字体Padding
+          labelPadding: EdgeInsets.all(5),
+          //选中字体颜色
+          labelColor: CommonColors.mainColor,
+          labelStyle: TextStyle(
+            fontSize: ScreenUtil().setHeight(20),
+          ),
+          unselectedLabelColor: Color(0xff333333),
+          unselectedLabelStyle: TextStyle(
+            fontSize: ScreenUtil().setHeight(15),
+          ),
+        ),
+      ),
+      body: TabBarView(
+        controller: controller,
+        children: <Widget>[
+          DuanziPage(),
+          Text("快递查询"),
+          Text("公交查询"),
         ],
       ),
     );
@@ -49,10 +91,7 @@ class HomeGridItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverGrid(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 8.0,
-          mainAxisSpacing: 8.0,
-          childAspectRatio: 1.0),
+          crossAxisCount: 2, crossAxisSpacing: 8.0, mainAxisSpacing: 8.0, childAspectRatio: 1.0),
       delegate: SliverChildBuilderDelegate(
         (contextm, index) {
           return InkWell(
@@ -83,9 +122,7 @@ class HomeGridItem extends StatelessWidget {
                       padding: EdgeInsets.only(top: 10, bottom: 10),
                       child: Text(
                         posts[index].title,
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: ScreenUtil().setHeight(20)),
+                        style: TextStyle(color: Colors.black, fontSize: ScreenUtil().setHeight(20)),
                       ),
                     ),
                   )

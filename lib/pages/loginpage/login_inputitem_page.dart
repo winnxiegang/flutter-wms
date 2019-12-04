@@ -50,8 +50,7 @@ class LoginInputItemPage extends StatelessWidget {
                 cursorColor: CommonColors.mainColor,
                 onChanged: (text) {
                   //内容改变的回调
-                  ProviderUtils.Pro<LoginProvide>(context)
-                      ?.setUsePhone('$text');
+                  ProviderUtils.Pro<LoginProvide>(context)?.setUsePhone('$text');
                 },
                 maxLength: 20,
                 style: TextStyleUtils.LoginInputTextStyle,
@@ -87,8 +86,7 @@ class LoginInputItemPage extends StatelessWidget {
                 cursorColor: CommonColors.mainColor,
                 onChanged: (text) {
                   //内容改变的回调
-                  ProviderUtils.Pro<LoginProvide>(context)
-                      ?.setUseWorld('$text');
+                  ProviderUtils.Pro<LoginProvide>(context)?.setUseWorld('$text');
                 },
                 maxLength: 20,
                 obscureText: true,
