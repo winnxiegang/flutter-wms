@@ -163,11 +163,15 @@ class HanppyListImagePageState extends State<HanppyListImagePage> with Automatic
               SizedBox(height: ScreenUtil().setHeight(10)),
               InkWell(
                 onTap: () {
-                  photoList
-                    ..clear()
-                    ..add(_goodsList[index].images ?? ""); //点击就加入
+                  photoList..add(_goodsList[index].images ?? "");
                   ProviderUtils.Pro<PhotpGalleryProvide>(context)?.addHappyList(photoList, 1);
                   Routes.router.navigateTo(context, Routes.photpGalleryPage);
+
+                  ///lsit toString 传递  但是比较麻烦
+//                  Routes.router.navigateTo(
+//                      context,
+//                      Routes.photpGalleryPage +
+//                          "?photoList=${Uri.encodeComponent(photoList.toString())}&index=${Uri.encodeComponent(index.toString())}");
                 },
                 child: CachedNetworkImage(
                   fit: BoxFit.cover,

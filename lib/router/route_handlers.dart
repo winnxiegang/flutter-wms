@@ -4,7 +4,9 @@ import 'package:flutter_wms/pages/confirm_new_password.dart';
 import 'package:flutter_wms/pages/loginpage/forget_passworld.dart';
 import 'package:flutter_wms/pages/loginpage/login.dart';
 import 'package:flutter_wms/pages/tabbar_page.dart';
+import 'package:flutter_wms/utils/fluro_convert_utils.dart';
 import 'package:flutter_wms/utils/toast_util.dart';
+import 'package:flutter_wms/wedghts/photp_gallery_new_page.dart';
 import 'package:flutter_wms/wedghts/photp_gallery_page.dart';
 import 'package:flutter_wms/wedghts/video_play_page.dart';
 
@@ -29,6 +31,13 @@ var confirmNewPasswordHandler = new Handler(handlerFunc: (BuildContext context, 
 
 ///图片查看
 var photpGalleryPageHandler = new Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String photoList = params['photoList']?.first ?? "";
+  String index = params['index']?.first ?? "";
+
+//  return PhotpGalleryNewPage(
+//    photoList: FluroConvertUtils.string2List(photoList),
+//    index: FluroConvertUtils.string2int(index),
+//  );
   return PhotpGalleryPage();
 });
 

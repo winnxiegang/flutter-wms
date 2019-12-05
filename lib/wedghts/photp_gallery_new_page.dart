@@ -1,21 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wms/provider/photp_gallery_provide.dart';
-import 'package:flutter_wms/utils/common_utils.dart';
+import 'package:flutter_wms/utils/tire_export.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
-///ProviderUtils 进行查看
-class PhotpGalleryPage extends StatefulWidget {
+///路由跳转传值查看
+class PhotpGalleryNewPage extends StatefulWidget {
+  final List photoList;
+  final int index;
+
+  PhotpGalleryNewPage({this.photoList, this.index});
+
   @override
-  _PhotpGalleryPageState createState() => _PhotpGalleryPageState();
+  _PhotpGalleryNewPageState createState() => _PhotpGalleryNewPageState();
 }
 
-class _PhotpGalleryPageState extends State<PhotpGalleryPage> {
-  List photoList;
-  int index;
+class _PhotpGalleryNewPageState extends State<PhotpGalleryNewPage> {
   int currentIndex = 0;
   int length;
-  int title = 1;
+  int title;
+
+  @override
+  void initState() {
+    print(widget.photoList);
+    currentIndex = widget.index;
+    length = widget.photoList.length;
+    title = currentIndex + 1;
+    super.initState();
+  }
 
   void onPageChanged(int index) {
     setState(() {
@@ -25,11 +36,6 @@ class _PhotpGalleryPageState extends State<PhotpGalleryPage> {
   }
 
   Widget build(BuildContext context) {
-    photoList = ProviderUtils.Pro<PhotpGalleryProvide>(context)?.photoList;
-    index = ProviderUtils.Pro<PhotpGalleryProvide>(context)?.index;
-    currentIndex = index;
-    length = photoList.length;
-    //title = initialIndex + 1;
     return Scaffold(
       appBar: AppBar(
         title: Text('$title / $length'),
@@ -50,12 +56,11 @@ class _PhotpGalleryPageState extends State<PhotpGalleryPage> {
                 scrollPhysics: const BouncingScrollPhysics(),
                 builder: (BuildContext context, int index) {
                   return PhotoViewGalleryPageOptions(
-                    imageProvider: NetworkImage(photoList[index]),
+                    imageProvider: NetworkImage(widget.photoList[index].toString().trim()),
                     initialScale: PhotoViewComputedScale.contained * 1,
-                    //heroAttributes: photoList[index]['id'],
                   );
                 },
-                itemCount: photoList.length,
+                itemCount: widget.photoList.length,
                 // loadingChild: widget.loadingChild,
                 backgroundDecoration: BoxDecoration(
                   color: Colors.black,
@@ -65,10 +70,10 @@ class _PhotpGalleryPageState extends State<PhotpGalleryPage> {
                 onPageChanged: onPageChanged,
               ),
               Container(
-                padding: EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(10.0),
                 child: Text(
-                  "图片 ${title}",
-                  style: TextStyle(color: Colors.white, fontSize: 17.0, decoration: null),
+                  "图片 ${currentIndex + 1}",
+                  style: const TextStyle(color: Colors.white, fontSize: 17.0, decoration: null),
                 ),
               )
             ],
