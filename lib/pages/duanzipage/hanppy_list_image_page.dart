@@ -1,12 +1,15 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wms/common/page_common.dart';
 import 'package:flutter_wms/models/duanzi_entity.dart';
 import 'package:flutter_wms/provider/duanzi_provide.dart';
+import 'package:flutter_wms/provider/photp_gallery_provide.dart';
 import 'package:flutter_wms/utils/tire_export.dart';
+import 'package:flutter_wms/wedghts/photp_gallery_page.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -24,6 +27,7 @@ class HanppyListImagePageState extends State<HanppyListImagePage> with Automatic
   Future _futureCouponList;
   int currentPage = 1;
   RefreshController _refreshController = RefreshController(initialRefresh: false);
+  List<String> photoList = [];
 
   @override
   bool get wantKeepAlive => true;
@@ -94,7 +98,7 @@ class HanppyListImagePageState extends State<HanppyListImagePage> with Automatic
   ///定义的data基类接受
   Future<DuanziEntity> _requestHappyList() async {
     var path = "https://api.apiopen.top/getJoke?";
-    var params = {"page": currentPage.toString(), "count": "10", "type": "text"};
+    var params = {"page": currentPage.toString(), "count": "10", "type": "image"};
     Response response = await Dio().post(path, queryParameters: params);
     DuanziEntity duanziEntity = DuanziEntity.fromJson(json.decode(response.toString()));
     Provider.of<DuanZiProvide>(context).addHappyList(duanziEntity.result, currentPage);
@@ -120,6 +124,7 @@ class HanppyListImagePageState extends State<HanppyListImagePage> with Automatic
           color: Colors.white,
           padding: const EdgeInsets.all(16),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Row(
                 children: <Widget>[
@@ -149,79 +154,99 @@ class HanppyListImagePageState extends State<HanppyListImagePage> with Automatic
                         SizedBox(
                           width: ScreenUtil().setHeight(5),
                         ),
-                        Text(_goodsList[index].up ?? "")
+                        Text(_goodsList[index].forward ?? "")
                       ],
                     ),
                   )
                 ],
               ),
               SizedBox(height: ScreenUtil().setHeight(10)),
-              Text(
-                _goodsList[index].text ?? "",
-                style: TextStyle(color: Color(0xFF333333), fontSize: ScreenUtil().setHeight(18)),
+              InkWell(
+                onTap: () {
+                  photoList
+                    ..clear()
+                    ..add(_goodsList[index].images ?? ""); //点击就加入
+                  ProviderUtils.Pro<PhotpGalleryProvide>(context)?.addHappyList(photoList, 1);
+                  Routes.router.navigateTo(context, Routes.photpGalleryPage);
+                },
+                child: CachedNetworkImage(
+                  fit: BoxFit.cover,
+                  imageUrl: _goodsList[index].images ?? "",
+                  placeholder: (context, url) =>
+                      cachedNetworkImageDefaultPlaceHolder(context: context, height: 200, width: double.infinity),
+                  errorWidget: (context, url, obj) => cachedNetworkImageDefaultErrorWidget(
+                      context: context, url: 'images/icon_fail.png', height: 200, width: double.infinity),
+                  width: double.maxFinite,
+                  height: 200,
+                ),
               ),
               SizedBox(height: ScreenUtil().setHeight(10)),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.sentiment_satisfied,
-                        color: CommonColors.smallpicColor,
-                        size: ScreenUtil().setHeight(25),
-                      ),
-                      SizedBox(
-                        width: ScreenUtil().setHeight(5),
-                      ),
-                      Text(_goodsList[index].up ?? "")
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.sentiment_dissatisfied,
-                        color: CommonColors.smallpicColor,
-                        size: ScreenUtil().setHeight(25),
-                      ),
-                      SizedBox(
-                        width: ScreenUtil().setHeight(5),
-                      ),
-                      Text(_goodsList[index].down ?? "")
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.sms,
-                        color: Colors.black38,
-                        size: ScreenUtil().setHeight(25),
-                      ),
-                      SizedBox(
-                        width: ScreenUtil().setHeight(5),
-                      ),
-                      Text(_goodsList[index].down ?? "")
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.share,
-                        color: CommonColors.smallpicColor,
-                        size: ScreenUtil().setHeight(25),
-                      ),
-                      SizedBox(
-                        width: ScreenUtil().setHeight(5),
-                      ),
-                      Text(_goodsList[index].down ?? "")
-                    ],
-                  )
-                ],
-              ),
+              __listItemBottomWidget(context, index),
             ],
           ),
         ),
         CommonDivider.buildDivider(ScreenUtil().setHeight(10)),
+      ],
+    );
+  }
+
+  /// 组件
+  Widget __listItemBottomWidget(BuildContext context, int index) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            Icon(
+              Icons.sentiment_satisfied,
+              color: CommonColors.smallpicColor,
+              size: ScreenUtil().setHeight(25),
+            ),
+            SizedBox(
+              width: ScreenUtil().setHeight(5),
+            ),
+            Text(_goodsList[index].up ?? "")
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            Icon(
+              Icons.sentiment_dissatisfied,
+              color: CommonColors.smallpicColor,
+              size: ScreenUtil().setHeight(25),
+            ),
+            SizedBox(
+              width: ScreenUtil().setHeight(5),
+            ),
+            Text(_goodsList[index].down ?? "")
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            Icon(
+              Icons.sms,
+              color: Colors.black38,
+              size: ScreenUtil().setHeight(25),
+            ),
+            SizedBox(
+              width: ScreenUtil().setHeight(5),
+            ),
+            Text(_goodsList[index].down ?? "")
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            Icon(
+              Icons.share,
+              color: CommonColors.smallpicColor,
+              size: ScreenUtil().setHeight(25),
+            ),
+            SizedBox(
+              width: ScreenUtil().setHeight(5),
+            ),
+            Text(_goodsList[index].down ?? "")
+          ],
+        )
       ],
     );
   }

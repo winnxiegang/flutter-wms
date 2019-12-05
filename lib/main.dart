@@ -1,6 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_wms/provider/photp_gallery_provide.dart';
 import 'package:flutter_wms/provider/duanzi_provide.dart';
 import 'package:flutter_wms/provider/print_order_privoder.dart';
 import 'package:flutter_wms/utils/tire_export.dart';
@@ -25,6 +26,7 @@ void main() {
           ChangeNotifierProvider.value(value: LoginProvide()),
           ChangeNotifierProvider.value(value: PrintOrderListProvide()),
           ChangeNotifierProvider.value(value: DuanZiProvide()),
+          ChangeNotifierProvider.value(value: PhotpGalleryProvide()),
         ],
         child: MyApp(),
       ),

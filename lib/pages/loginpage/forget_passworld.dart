@@ -130,7 +130,7 @@ class ForgetPassWorldPageState extends State<ForgetPassWorldPage> {
   /// LoginSumbit组件
   Widget _sumbitButtonWidget() {
     return Container(
-      height: ScreenUtil().setHeight(78),
+      height: ScreenUtil().setHeight(48),
       margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
       width: ScreenUtil.screenWidth,
       child: ButtonUtils.raisedButtonUtils(onClick: () {

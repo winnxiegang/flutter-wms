@@ -120,6 +120,7 @@ class HanppyListTextPageState extends State<HanppyListTextPage> with AutomaticKe
           color: Colors.white,
           padding: const EdgeInsets.all(16),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Row(
                 children: <Widget>[
@@ -161,67 +162,72 @@ class HanppyListTextPageState extends State<HanppyListTextPage> with AutomaticKe
                 style: TextStyle(color: Color(0xFF333333), fontSize: ScreenUtil().setHeight(18)),
               ),
               SizedBox(height: ScreenUtil().setHeight(10)),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.sentiment_satisfied,
-                        color: CommonColors.smallpicColor,
-                        size: ScreenUtil().setHeight(25),
-                      ),
-                      SizedBox(
-                        width: ScreenUtil().setHeight(5),
-                      ),
-                      Text(_goodsList[index].up ?? "")
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.sentiment_dissatisfied,
-                        color: CommonColors.smallpicColor,
-                        size: ScreenUtil().setHeight(25),
-                      ),
-                      SizedBox(
-                        width: ScreenUtil().setHeight(5),
-                      ),
-                      Text(_goodsList[index].down ?? "")
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.sms,
-                        color: Colors.black38,
-                        size: ScreenUtil().setHeight(25),
-                      ),
-                      SizedBox(
-                        width: ScreenUtil().setHeight(5),
-                      ),
-                      Text(_goodsList[index].down ?? "")
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.share,
-                        color: CommonColors.smallpicColor,
-                        size: ScreenUtil().setHeight(25),
-                      ),
-                      SizedBox(
-                        width: ScreenUtil().setHeight(5),
-                      ),
-                      Text(_goodsList[index].down ?? "")
-                    ],
-                  )
-                ],
-              ),
+              __listItemBottomWidget(context, index),
             ],
           ),
         ),
         CommonDivider.buildDivider(ScreenUtil().setHeight(10)),
+      ],
+    );
+  }
+
+  /// 底部表情组件
+  Widget __listItemBottomWidget(BuildContext context, int index) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            Icon(
+              Icons.sentiment_satisfied,
+              color: CommonColors.smallpicColor,
+              size: ScreenUtil().setHeight(25),
+            ),
+            SizedBox(
+              width: ScreenUtil().setHeight(5),
+            ),
+            Text(_goodsList[index].up ?? "")
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            Icon(
+              Icons.sentiment_dissatisfied,
+              color: CommonColors.smallpicColor,
+              size: ScreenUtil().setHeight(25),
+            ),
+            SizedBox(
+              width: ScreenUtil().setHeight(5),
+            ),
+            Text(_goodsList[index].down ?? "")
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            Icon(
+              Icons.sms,
+              color: Colors.black38,
+              size: ScreenUtil().setHeight(25),
+            ),
+            SizedBox(
+              width: ScreenUtil().setHeight(5),
+            ),
+            Text(_goodsList[index].down ?? "")
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            Icon(
+              Icons.share,
+              color: CommonColors.smallpicColor,
+              size: ScreenUtil().setHeight(25),
+            ),
+            SizedBox(
+              width: ScreenUtil().setHeight(5),
+            ),
+            Text(_goodsList[index].down ?? "")
+          ],
+        )
       ],
     );
   }

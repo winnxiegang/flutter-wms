@@ -51,9 +51,7 @@ Widget upAndDownArranged(item, width, size) => Container(
     );
 
 /// 文字箭头
-Widget listItemRightArr(
-        {@required title, titleStyle, showArr = false, arrColor}) =>
-    Row(
+Widget listItemRightArr({@required title, titleStyle, showArr = false, arrColor}) => Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -87,6 +85,23 @@ Widget cachedNetworkImageDefaultPlaceHolder({
         width: 20,
         height: 20,
         child: CircularProgressIndicator(strokeWidth: 2.0),
+      ),
+    );
+
+/// 默认图片加载失败图
+Widget cachedNetworkImageDefaultErrorWidget({
+  double width,
+  double height,
+  BuildContext context,
+  String url,
+  Object error,
+}) =>
+    Container(
+      width: width,
+      height: height,
+      color: Color(0xFFBFBFBF),
+      child: Image.asset(
+        url,
       ),
     );
 

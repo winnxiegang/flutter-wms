@@ -29,24 +29,24 @@ class DuanziEntity {
 
 class DuanziResult {
   String thumbnail;
-  dynamic images;
-  dynamic topCommentsContent;
+  String images;
+  String topCommentsContent;
   String forward;
   String video;
   String type;
   String down;
   String sid;
-  dynamic topCommentsUid;
+  String topCommentsUid;
   String uid;
   String passtime;
-  dynamic topCommentsVoiceuri;
-  dynamic topCommentsName;
+  String topCommentsVoiceuri;
+  String topCommentsName;
   String name;
   String header;
   String comment;
   String text;
   String up;
-  dynamic topCommentsHeader;
+  String topCommentsHeader;
 
   DuanziResult(
       {this.thumbnail,
