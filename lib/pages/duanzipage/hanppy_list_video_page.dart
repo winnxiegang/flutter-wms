@@ -156,9 +156,8 @@ class HanppyListVidePageState extends State<HanppyListVidePage> with AutomaticKe
               SizedBox(height: ScreenUtil().setHeight(10)),
               InkWell(
                 onTap: () {
-//                  Routes.router
-//                      .navigateTo(context, Routes.videoPalyShowPage + "?urlPaly=${_goodsList[index].video ?? ""}");
-                  Routes.router.navigateTo(context, Routes.videoPalyShowPage);
+                  Routes.router.navigateTo(context,
+                      Routes.videoPalyShowPage + "?urlPaly=${Uri.encodeComponent(_goodsList[index].video ?? "")}");
                 },
                 child: CachedNetworkImage(
                   fit: BoxFit.cover,

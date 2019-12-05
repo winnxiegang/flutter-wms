@@ -7,8 +7,8 @@ class VideoPalyShowPage extends StatefulWidget {
   final String url;
 
   const VideoPalyShowPage({
-    this.url,
     Key key,
+    this.url,
   }) : super(key: key);
 
   @override
