@@ -9,15 +9,10 @@ import 'package:flutter_wms/models/duanzi_entity.dart';
 import 'package:flutter_wms/provider/duanzi_provide.dart';
 import 'package:flutter_wms/provider/photp_gallery_provide.dart';
 import 'package:flutter_wms/utils/tire_export.dart';
-import 'package:flutter_wms/wedghts/photp_gallery_page.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class HanppyListImagePage extends StatefulWidget {
-  const HanppyListImagePage({
-    Key key,
-  }) : super(key: key);
-
   @override
   HanppyListImagePageState createState() => new HanppyListImagePageState();
 }
@@ -28,6 +23,7 @@ class HanppyListImagePageState extends State<HanppyListImagePage> with Automatic
   int currentPage = 1;
   RefreshController _refreshController = RefreshController(initialRefresh: false);
   List<String> photoList = [];
+  String requsstType = "image";
 
   @override
   bool get wantKeepAlive => true;
@@ -98,7 +94,7 @@ class HanppyListImagePageState extends State<HanppyListImagePage> with Automatic
   ///定义的data基类接受
   Future<DuanziEntity> _requestHappyList() async {
     var path = "https://api.apiopen.top/getJoke?";
-    var params = {"page": currentPage.toString(), "count": "10", "type": "image"};
+    var params = {"page": currentPage.toString(), "count": "10", "type": requsstType};
     Response response = await Dio().post(path, queryParameters: params);
     DuanziEntity duanziEntity = DuanziEntity.fromJson(json.decode(response.toString()));
     Provider.of<DuanZiProvide>(context).addHappyList(duanziEntity.result, currentPage);
@@ -107,12 +103,14 @@ class HanppyListImagePageState extends State<HanppyListImagePage> with Automatic
 
   void onRefreshData() {
     currentPage = 1;
+    requsstType = "image";
     _requestHappyList();
   }
 
   void onLoadData() {
     setState(() {
       currentPage++;
+      requsstType = currentPage % 2 == 0 ? "image" : "gif";
       _requestHappyList();
     });
   }

@@ -96,9 +96,14 @@ class DuanziPageState extends State<DuanziPage> {
             //这里加了 Expanded 子布局里面就可以去掉Expanded 控制
             Expanded(
               child: PageView(
+                scrollDirection: Axis.horizontal,
                 controller: pageController,
                 children: bodyList,
-                physics: NeverScrollableScrollPhysics(),
+                // physics: NeverScrollableScrollPhysics(),
+                onPageChanged: (index) {
+                  Provider.of<DuanZiProvide>(context).changeClickPosition(index);
+                  pageController.jumpToPage(index);
+                },
               ),
             )
           ],
