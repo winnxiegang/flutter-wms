@@ -11,4 +11,3 @@ export '../utils/input_check_utils.dart';
 export '../utils/textstyle.dart';
 export '../utils/button_utils.dart';
 export 'package:flutter/material.dart';
-export 'package:flutter_easyrefresh/easy_refresh.dart';

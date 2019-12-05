@@ -34,7 +34,6 @@ dependencies:
   shared_preferences: 0.5.3+4
   provider:
   permission_handler: ^3.3.0
-  flutter_easyrefresh: ^2.0.4
   flutter_screenutil: ^0.5.1
   #国际化
   flutter_localizations:
@@ -42,6 +41,7 @@ dependencies:
   log4d: ^1.0.4
   flutter_swiper: ^1.1.4
   pull_to_refresh: ^1.5.7
+  cached_network_image: 1.1.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

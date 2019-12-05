@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wms/pages/confirm_new_password.dart';
 import 'package:flutter_wms/pages/loginpage/forget_passworld.dart';
 import 'package:flutter_wms/pages/loginpage/login.dart';
-import 'package:flutter_wms/pages/printpage/printpage.dart';
 import 'package:flutter_wms/pages/tabbar_page.dart';
 
 /// 根目录
@@ -30,7 +29,3 @@ var confirmNewPasswordHandler = new Handler(
   return ConfirmNewPasswordPage(code: code, phone: phone);
 });
 
-///打印
-var printOrderHandler = new Handler(
-    handlerFunc: (BuildContext context, Map<String, List<String>> params) =>
-        PrintOrderPage());

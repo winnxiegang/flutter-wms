@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_wms/common/app_global.dart';
-import 'package:flutter_wms/provider/login_provide.dart';
 import 'package:flutter_wms/utils/tire_export.dart';
 
 //我的信息
@@ -32,15 +29,11 @@ class MineInformationPageState extends State<MineInformationPage> {
         appBar: CommonAppBar.buildAppBar("个人中心"),
         body: Container(
           color: CommonColors.grayBg,
-          child: EasyRefresh.custom(
-            topBouncing: false, //顶部不可回弹
-            slivers: <Widget>[
-              SliverList(
-                  delegate: SliverChildListDelegate([
-                _headMineWidget(),
-                CommonDivider.buildDivider(ScreenUtil().setHeight(20)),
-                _medialMineWidget(context),
-              ]))
+          child: ListView(
+            children: <Widget>[
+              _headMineWidget(),
+              CommonDivider.buildDivider(ScreenUtil().setHeight(20)),
+              _medialMineWidget(context),
             ],
           ),
         ));
@@ -62,9 +55,8 @@ class MineInformationPageState extends State<MineInformationPage> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(
-                0, ScreenUtil().setHeight(20), 0, ScreenUtil().setHeight(20)),
-            child: Text(Global.useStatusStatus.userName ??''),
+            padding: EdgeInsets.fromLTRB(0, ScreenUtil().setHeight(20), 0, ScreenUtil().setHeight(20)),
+            child: Text(Global.useStatusStatus.userName ?? ''),
           ),
         ],
       ),
@@ -138,8 +130,7 @@ class MineInformationPageState extends State<MineInformationPage> {
                 onPressed: () async => {
                   ProviderUtils.Pro<UseStatusProvide>(context).logoutStatus(),
                   //clearStack清理所有栈
-                  Routes.router.navigateTo(context, Routes.login,
-                      replace: true, clearStack: true),
+                  Routes.router.navigateTo(context, Routes.login, replace: true, clearStack: true),
                 },
                 child: new Text(
                   '确定',

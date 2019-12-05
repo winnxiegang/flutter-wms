@@ -14,7 +14,6 @@ class Routes {
     router.define(login, handler: loginHandler);
     router.define(forgetPassword, handler: forgetPasswordHandler);
     router.define(confirmNewPassword, handler: confirmNewPasswordHandler);
-    router.define(printOrder, handler: printOrderHandler);
     Routes.router = router;
   }
 }
