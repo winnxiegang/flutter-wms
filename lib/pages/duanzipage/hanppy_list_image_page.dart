@@ -10,16 +10,16 @@ import 'package:flutter_wms/utils/tire_export.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class HanppyListTextPage extends StatefulWidget {
-  const HanppyListTextPage({
+class HanppyListImagePage extends StatefulWidget {
+  const HanppyListImagePage({
     Key key,
   }) : super(key: key);
 
   @override
-  HanppyListTextPageState createState() => new HanppyListTextPageState();
+  HanppyListImagePageState createState() => new HanppyListImagePageState();
 }
 
-class HanppyListTextPageState extends State<HanppyListTextPage> with AutomaticKeepAliveClientMixin {
+class HanppyListImagePageState extends State<HanppyListImagePage> with AutomaticKeepAliveClientMixin {
   List<DuanziResult> _goodsList = [];
   Future _futureCouponList;
   int currentPage = 1;

@@ -5,7 +5,7 @@ class DuanZiProvide extends ChangeNotifier {
   List<DuanziResult> _listHappyzi = [];
 
   List<DuanziResult> get listHappyItem => _listHappyzi;
-  bool isVideoClick = false;
+  int clickPosition = 0;
 
   void addHappyList(List<DuanziResult> list, int currentPage) {
     if (list == null) {
@@ -19,8 +19,8 @@ class DuanZiProvide extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeClick(bool isClickVideo) {
-    isVideoClick = isClickVideo;
+  void changeClickPosition(int isClickVideo) {
+    clickPosition = isClickVideo;
     notifyListeners();
   }
 }

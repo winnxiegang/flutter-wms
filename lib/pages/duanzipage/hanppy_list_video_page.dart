@@ -19,10 +19,13 @@ class HanppyListVidePage extends StatefulWidget {
   HanppyListVidePageState createState() => new HanppyListVidePageState();
 }
 
-class HanppyListVidePageState extends State<HanppyListVidePage> {
+class HanppyListVidePageState extends State<HanppyListVidePage> with AutomaticKeepAliveClientMixin {
   List<DuanziResult> _goodsList = [];
   int currentPage = 1;
   RefreshController _refreshController = RefreshController(initialRefresh: false);
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -48,37 +51,35 @@ class HanppyListVidePageState extends State<HanppyListVidePage> {
       _goodsList = Provider.of<DuanZiProvide>(context).listHappyItem;
       if (_goodsList.length == 0) return noDataText();
       if (_goodsList.length != 0 && data.listHappyItem.length == 0) _refreshController.loadNoData();
-      return Expanded(
-        child: SmartRefresher(
-          enablePullUp: true,
-          enablePullDown: true,
-          controller: _refreshController,
-          header: ClassicHeader(
-            idleText: "下拉中",
-            releaseText: "松手加载",
-            refreshingText: "加载中",
-            completeText: "加载完成",
-          ),
-          footer: ClassicFooter(
-            idleText: "加载完成",
-            noDataText: "没有更多",
-            loadStyle: LoadStyle.ShowAlways,
-            loadingText: "加载中",
-          ),
-          onRefresh: () {
-            Future.delayed(Duration(milliseconds: 2000), () {
-              onRefreshData();
-              _refreshController.refreshCompleted();
-            });
-          },
-          onLoading: () async {
-            Future.delayed(Duration(milliseconds: 2000), () {
-              onLoadData();
-              _refreshController.loadComplete();
-            });
-          },
-          child: ListView.builder(itemBuilder: _listItemWidget, itemCount: _goodsList.length),
+      return SmartRefresher(
+        enablePullUp: true,
+        enablePullDown: true,
+        controller: _refreshController,
+        header: ClassicHeader(
+          idleText: "下拉中",
+          releaseText: "松手加载",
+          refreshingText: "加载中",
+          completeText: "加载完成",
         ),
+        footer: ClassicFooter(
+          idleText: "加载完成",
+          noDataText: "没有更多",
+          loadStyle: LoadStyle.ShowAlways,
+          loadingText: "加载中",
+        ),
+        onRefresh: () {
+          Future.delayed(Duration(milliseconds: 2000), () {
+            onRefreshData();
+            _refreshController.refreshCompleted();
+          });
+        },
+        onLoading: () async {
+          Future.delayed(Duration(milliseconds: 2000), () {
+            onLoadData();
+            _refreshController.loadComplete();
+          });
+        },
+        child: ListView.builder(itemBuilder: _listItemWidget, itemCount: _goodsList.length),
       );
       /**
           SmartRefresher 嵌套子布局使用  ListView 等view 一定要限制子布局View 的滑动问题

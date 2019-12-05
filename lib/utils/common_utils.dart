@@ -21,6 +21,8 @@ class CommonColors {
 
   //灰色图片
   static const Color mainBlackFF99Color = Color(0xFF999999);
+  //小图颜色
+  static const Color smallpicColor = Colors.black38;
 }
 
 class CommonDivider {

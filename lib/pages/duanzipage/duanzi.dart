@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wms/pages/duanzipage/hanppy_list_text_page.dart';
+import 'package:flutter_wms/pages/duanzipage/hanppy_list_video_page.dart';
 import 'package:flutter_wms/provider/duanzi_provide.dart';
 import 'package:flutter_wms/utils/tire_export.dart';
 import 'package:provider/provider.dart';
 
-import 'hanppy_list_video_page.dart';
+import 'hanppy_list_image_page.dart';
 
 class DuanziPage extends StatefulWidget {
-  const DuanziPage({
-    Key key,
-  }) : super(key: key);
-
   @override
   DuanziPageState createState() => new DuanziPageState();
 }
 
 class DuanziPageState extends State<DuanziPage> {
+  final bodyList = [
+    HanppyListTextPage(),
+    HanppyListImagePage(),
+    HanppyListVidePage(),
+  ];
+  final pageController = PageController();
+
   @override
   void initState() {
     super.initState();
@@ -23,14 +27,14 @@ class DuanziPageState extends State<DuanziPage> {
 
   @override
   void dispose() {
-    // TODO: 销毁
+    pageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<DuanZiProvide>(builder: (context, DuanZiProvide data, child) {
-      bool videoClick = data.isVideoClick;
+      int clickPosition = data.clickPosition;
       return Container(
         color: CommonColors.grayBg,
         child: Column(
@@ -43,35 +47,60 @@ class DuanziPageState extends State<DuanziPage> {
                     padding: const EdgeInsets.only(right: 8, left: 16),
                     child: GestureDetector(
                       onTap: () {
-                        Provider.of<DuanZiProvide>(context).changeClick(false);
+                        pageController.jumpToPage(0);
+                        Provider.of<DuanZiProvide>(context).changeClickPosition(0);
                       },
                       child: Chip(
-                        backgroundColor: videoClick ? Colors.white : Colors.amber,
+                        backgroundColor: clickPosition == 0 ? Colors.amber : Colors.white,
                         label: Text(
                           '文本',
                           style: TextStyle(
-                            color: videoClick ? Colors.black : Colors.white,
+                            color: clickPosition == 0 ? Colors.white : Colors.black,
                           ),
                         ),
                       ),
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: GestureDetector(
+                      onTap: () {
+                        pageController.jumpToPage(1);
+                        Provider.of<DuanZiProvide>(context).changeClickPosition(1);
+                      },
+                      child: Chip(
+                        backgroundColor: clickPosition == 1 ? Colors.amber : Colors.white,
+                        label: Text('图片',
+                            style: TextStyle(
+                              color: clickPosition == 1 ? Colors.white : Colors.black,
+                            )),
+                      ),
+                    ),
+                  ),
                   GestureDetector(
                     onTap: () {
-                      Provider.of<DuanZiProvide>(context).changeClick(true);
+                      pageController.jumpToPage(2);
+                      Provider.of<DuanZiProvide>(context).changeClickPosition(2);
                     },
                     child: Chip(
-                      backgroundColor: videoClick ? Colors.amber : Colors.white,
+                      backgroundColor: clickPosition == 2 ? Colors.amber : Colors.white,
                       label: Text('视频',
                           style: TextStyle(
-                            color: videoClick ? Colors.white : Colors.black,
+                            color: clickPosition == 2 ? Colors.white : Colors.black,
                           )),
                     ),
                   ),
                 ],
               ),
             ),
-            videoClick ? HanppyListVidePage() : HanppyListTextPage()
+            //这里加了 Expanded 子布局里面就可以去掉Expanded 控制
+            Expanded(
+              child: PageView(
+                controller: pageController,
+                children: bodyList,
+                physics: NeverScrollableScrollPhysics(),
+              ),
+            )
           ],
         ),
       );
