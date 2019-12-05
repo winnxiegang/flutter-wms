@@ -18,6 +18,7 @@ class LoginPage extends StatefulWidget {
 class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.instance = ScreenUtil(width: 375, height: 657)..init(context);
     return Scaffold(
         appBar: CommonAppBar.buildAppBar("登录界面"),
         body: GestureDetector(

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wms/common/page_common.dart';
@@ -110,29 +111,134 @@ class HanppyListVidePageState extends State<HanppyListVidePage> with AutomaticKe
   }
 
   Widget _listItemWidget(BuildContext context, int index) {
-    return InkWell(
-      child: Column(
-        children: <Widget>[
-          SizedBox(
-            height: 10,
-          ),
-          Row(
+    return Column(
+      children: <Widget>[
+        Container(
+          color: Colors.white,
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                'OE码:',
-                style: TextStyle(color: Color(0xFF888888), fontSize: ScreenUtil().setHeight(16)),
+              Row(
+                children: <Widget>[
+                  ClipOval(
+                    child: Image.network(
+                      _goodsList[index].header ?? "",
+                      height: ScreenUtil().setHeight(37),
+                      width: ScreenUtil().setHeight(37),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  SizedBox(width: ScreenUtil().setHeight(10)),
+                  Text(
+                    _goodsList[index].name ?? "",
+                    style: TextStyle(color: Color(0xFF333333), fontSize: ScreenUtil().setHeight(18)),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Icon(
+                          Icons.favorite_border,
+                          color: CommonColors.smallpicColor,
+                          size: ScreenUtil().setHeight(25),
+                        ),
+                        SizedBox(
+                          width: ScreenUtil().setHeight(5),
+                        ),
+                        Text(_goodsList[index].forward ?? "")
+                      ],
+                    ),
+                  )
+                ],
               ),
-              SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  _goodsList[index].text,
-                  style: TextStyle(color: Color(0xFF333333), fontSize: ScreenUtil().setHeight(22)),
+              SizedBox(height: ScreenUtil().setHeight(10)),
+              InkWell(
+                onTap: () {
+//                  Routes.router
+//                      .navigateTo(context, Routes.videoPalyShowPage + "?urlPaly=${_goodsList[index].video ?? ""}");
+                  Routes.router.navigateTo(context, Routes.videoPalyShowPage);
+                },
+                child: CachedNetworkImage(
+                  fit: BoxFit.cover,
+                  imageUrl: _goodsList[index].thumbnail ?? "",
+                  placeholder: (context, url) =>
+                      cachedNetworkImageDefaultPlaceHolder(context: context, height: 200, width: double.infinity),
+                  errorWidget: (context, url, obj) => cachedNetworkImageDefaultErrorWidget(
+                      context: context, url: 'images/icon_fail.png', height: 200, width: double.infinity),
+                  width: double.maxFinite,
+                  height: 200,
                 ),
-              )
+              ),
+              SizedBox(height: ScreenUtil().setHeight(10)),
+              __listItemBottomWidget(context, index),
             ],
           ),
-        ],
-      ),
+        ),
+        CommonDivider.buildDivider(ScreenUtil().setHeight(10)),
+      ],
+    );
+  }
+
+  /// 组件
+  Widget __listItemBottomWidget(BuildContext context, int index) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            Icon(
+              Icons.sentiment_satisfied,
+              color: CommonColors.smallpicColor,
+              size: ScreenUtil().setHeight(25),
+            ),
+            SizedBox(
+              width: ScreenUtil().setHeight(5),
+            ),
+            Text(_goodsList[index].up ?? "")
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            Icon(
+              Icons.sentiment_dissatisfied,
+              color: CommonColors.smallpicColor,
+              size: ScreenUtil().setHeight(25),
+            ),
+            SizedBox(
+              width: ScreenUtil().setHeight(5),
+            ),
+            Text(_goodsList[index].down ?? "")
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            Icon(
+              Icons.sms,
+              color: Colors.black38,
+              size: ScreenUtil().setHeight(25),
+            ),
+            SizedBox(
+              width: ScreenUtil().setHeight(5),
+            ),
+            Text(_goodsList[index].down ?? "")
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            Icon(
+              Icons.share,
+              color: CommonColors.smallpicColor,
+              size: ScreenUtil().setHeight(25),
+            ),
+            SizedBox(
+              width: ScreenUtil().setHeight(5),
+            ),
+            Text(_goodsList[index].down ?? "")
+          ],
+        )
+      ],
     );
   }
 }

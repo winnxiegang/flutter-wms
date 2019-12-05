@@ -8,6 +8,7 @@ class Routes {
   static String login = "/login";
   static String confirmNewPassword = "/confirmNewPassword";
   static String photpGalleryPage = "/photpGalleryPage";
+  static String videoPalyShowPage = "/videoPalyShowPage";
 
   static void configureRoutes(Router router) {
     router.define(root, handler: rootHandler);
@@ -15,6 +16,7 @@ class Routes {
     router.define(forgetPassword, handler: forgetPasswordHandler);
     router.define(confirmNewPassword, handler: confirmNewPasswordHandler);
     router.define(photpGalleryPage, handler: photpGalleryPageHandler);
+    router.define(videoPalyShowPage, handler: videoPalyShowPageHandler);
     Routes.router = router;
   }
 }
