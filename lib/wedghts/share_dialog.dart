@@ -3,6 +3,7 @@ import 'package:flutter_wms/models/duanzi_entity.dart';
 import 'package:flutter_wms/provider/duanzi_provide.dart';
 import 'package:flutter_wms/utils/tire_export.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 
 class ShareDialogPage extends StatefulWidget {
   final DuanziResult duanziResult;

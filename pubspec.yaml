@@ -46,7 +46,7 @@ dependencies:
   #视频播放
   chewie: ^0.9.8+1
   #f分享
-  jpush_flutter: 0.0.11
+  share: ^0.6.1+1
   amap_base_location: ^0.4.0+1
 dev_dependencies:
   flutter_test:

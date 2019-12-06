@@ -67,7 +67,7 @@ android {
         debug {
             //Zipalign优化
             zipAlignEnabled false
-          //  minifyEnabled false
+            //  minifyEnabled false
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.release
         }

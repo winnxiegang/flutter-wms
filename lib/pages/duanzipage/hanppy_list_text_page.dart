@@ -10,6 +10,7 @@ import 'package:flutter_wms/utils/tire_export.dart';
 import 'package:flutter_wms/wedghts/share_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:share/share.dart';
 
 class HanppyListTextPage extends StatefulWidget {
   const HanppyListTextPage({
@@ -220,7 +221,7 @@ class HanppyListTextPageState extends State<HanppyListTextPage> with AutomaticKe
           children: <Widget>[
             InkWell(
               onTap: () {
-                showMyShareDialog(context,_goodsList[index]);
+                showSimChouseDialog(context, _goodsList[index]);
               },
               child: Icon(
                 Icons.share,
@@ -239,13 +240,52 @@ class HanppyListTextPageState extends State<HanppyListTextPage> with AutomaticKe
   }
 
   ///  showDIalog组件
-  void showMyShareDialog(BuildContext context,DuanziResult duanziResult) {
+  void showSimChouseDialog(BuildContext context, DuanziResult duanziResult) {
+    //showModalBottomSheet 底部dialog
+    showDialog(
+        context: context,
+        builder: (context) {
+          return SimpleDialog(
+            children: <Widget>[
+              SimpleDialogOption(
+                child: InkWell(
+                  child: Text(
+                    "简单分享",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Share.share("${duanziResult.name}说:\n,${duanziResult.text}");
+                  },
+                ),
+              ),
+              SimpleDialogOption(
+                child: InkWell(
+                  child: Text(
+                    "其他分享",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    showMyShareDialog(context, duanziResult);
+                  },
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  ///  showDIalog组件
+  void showMyShareDialog(BuildContext context, DuanziResult duanziResult) {
     //showModalBottomSheet 底部dialog
     showModalBottomSheet(
         backgroundColor: Colors.transparent,
         context: context,
         builder: (context) {
-          return ShareDialogPage(duanziResult:duanziResult);
+          return ShareDialogPage(duanziResult: duanziResult);
         });
   }
 }
