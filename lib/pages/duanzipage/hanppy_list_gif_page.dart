@@ -9,6 +9,7 @@ import 'package:flutter_wms/models/duanzi_entity.dart';
 import 'package:flutter_wms/provider/duanzi_provide.dart';
 import 'package:flutter_wms/provider/photp_gallery_provide.dart';
 import 'package:flutter_wms/utils/tire_export.dart';
+import 'package:flutter_wms/wedghts/share_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -237,10 +238,15 @@ class HanppyListGifPageState extends State<HanppyListGifPage> with AutomaticKeep
         ),
         Row(
           children: <Widget>[
-            Icon(
-              Icons.share,
-              color: CommonColors.smallpicColor,
-              size: ScreenUtil().setHeight(25),
+            InkWell(
+              onTap: () {
+                showMyShareDialog(context, _goodsList[index]);
+              },
+              child: Icon(
+                Icons.share,
+                color: CommonColors.smallpicColor,
+                size: ScreenUtil().setHeight(25),
+              ),
             ),
             SizedBox(
               width: ScreenUtil().setHeight(5),
@@ -250,5 +256,16 @@ class HanppyListGifPageState extends State<HanppyListGifPage> with AutomaticKeep
         )
       ],
     );
+  }
+
+  ///  showDIalog组件
+  void showMyShareDialog(BuildContext context, DuanziResult duanziResult) {
+    //showModalBottomSheet 底部dialog
+    showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (context) {
+          return ShareDialogPage(duanziResult: duanziResult);
+        });
   }
 }

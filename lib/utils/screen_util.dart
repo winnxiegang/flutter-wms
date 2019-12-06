@@ -81,7 +81,6 @@ class ScreenUtil {
   /// 或者形状有差异时,高度适配建议使用此方法
   /// 高度适配主要针对想根据设计稿的一屏展示一样的效果
   setHeight(int height) => height * scaleHeight;
-
   ///字体大小适配方法
   ///@param fontSize 传入设计稿上字体的px ,
   ///@param allowFontScaling 控制字体是否要根据系统的“字体大小”辅助选项来进行缩放。默认值为true。

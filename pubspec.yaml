@@ -58,6 +58,14 @@ flutter:
   uses-material-design: true
   assets:
     - images/
+    - images/wei_xin.png
+    - images/qq.png
+    - images/qqkongjian.png
+    - images/weixinfrind.png
+    - images/copy_url.png
+    - images/report.png
+    - images/no_favorite.png
+    - images/favorite.png
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg
