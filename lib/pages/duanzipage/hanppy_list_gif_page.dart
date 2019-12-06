@@ -12,18 +12,18 @@ import 'package:flutter_wms/utils/tire_export.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class HanppyListImagePage extends StatefulWidget {
+class HanppyListGifPage extends StatefulWidget {
   @override
-  HanppyListImagePageState createState() => new HanppyListImagePageState();
+  HanppyListGifPageState createState() => new HanppyListGifPageState();
 }
 
-class HanppyListImagePageState extends State<HanppyListImagePage> with AutomaticKeepAliveClientMixin {
+class HanppyListGifPageState extends State<HanppyListGifPage> with AutomaticKeepAliveClientMixin {
   List<DuanziResult> _goodsList = [];
   Future _futureCouponList;
   int currentPage = 1;
   RefreshController _refreshController = RefreshController(initialRefresh: false);
   List<String> photoList = [];
-  String requsstType = "image";
+  String requsstType = "gif";
 
   @override
   bool get wantKeepAlive => true;
@@ -50,7 +50,7 @@ class HanppyListImagePageState extends State<HanppyListImagePage> with Automatic
         builder: (context, data) {
           if (data.hasData) {
             print("listHappyPicItem");
-            _goodsList = Provider.of<DuanZiProvide>(context).listHappyPicItem;
+            _goodsList = Provider.of<DuanZiProvide>(context).listHappyGifItem;
             if (_goodsList.length == 0) return noDataText();
             if (_goodsList.length != 0 && data.data.result.length == 0) _refreshController.loadNoData();
           } else {
@@ -98,7 +98,7 @@ class HanppyListImagePageState extends State<HanppyListImagePage> with Automatic
     var params = {"page": currentPage.toString(), "count": "10", "type": requsstType};
     Response response = await Dio().post(path, queryParameters: params);
     DuanziEntity duanziEntity = DuanziEntity.fromJson(json.decode(response.toString()));
-    Provider.of<DuanZiProvide>(context).addHappyPicList(duanziEntity.result, currentPage);
+    Provider.of<DuanZiProvide>(context).addHappyGifList(duanziEntity.result, currentPage);
     return DuanziEntity.fromJson(json.decode(response.toString()));
   }
 

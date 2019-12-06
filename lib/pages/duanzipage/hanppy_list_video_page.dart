@@ -43,15 +43,16 @@ class HanppyListVidePageState extends State<HanppyListVidePage> with AutomaticKe
   @override
   Widget build(BuildContext context) {
     return Consumer<DuanZiProvide>(builder: (context, DuanZiProvide data, child) {
-      if (data.listHappyItem.length == 0) {
+      print("listHappyVideItem");
+      if (data.listHappyVideItem.length == 0) {
         return Container(
           alignment: Alignment.center,
           child: loadingCellBox(),
         );
       }
-      _goodsList = Provider.of<DuanZiProvide>(context).listHappyItem;
+      _goodsList = Provider.of<DuanZiProvide>(context).listHappyVideItem;
       if (_goodsList.length == 0) return noDataText();
-      if (_goodsList.length != 0 && data.listHappyItem.length == 0) _refreshController.loadNoData();
+      if (_goodsList.length != 0 && data.listHappyVideItem.length == 0) _refreshController.loadNoData();
       return SmartRefresher(
         enablePullUp: true,
         enablePullDown: true,
@@ -94,7 +95,7 @@ class HanppyListVidePageState extends State<HanppyListVidePage> with AutomaticKe
     var params = {"page": currentPage.toString(), "count": "10", "type": "video"};
     await Dio().post(path, queryParameters: params).then((response) {
       DuanziEntity duanziEntity = DuanziEntity.fromJson(json.decode(response.toString()));
-      Provider.of<DuanZiProvide>(context).addHappyList(duanziEntity.result, currentPage);
+      Provider.of<DuanZiProvide>(context).addHappyVideoList(duanziEntity.result, currentPage);
     });
   }
 
@@ -159,15 +160,30 @@ class HanppyListVidePageState extends State<HanppyListVidePage> with AutomaticKe
                   Routes.router.navigateTo(context,
                       Routes.videoPalyShowPage + "?urlPaly=${Uri.encodeComponent(_goodsList[index].video ?? "")}");
                 },
-                child: CachedNetworkImage(
-                  fit: BoxFit.cover,
-                  imageUrl: _goodsList[index].thumbnail ?? "",
-                  placeholder: (context, url) =>
-                      cachedNetworkImageDefaultPlaceHolder(context: context, height: 200, width: double.infinity),
-                  errorWidget: (context, url, obj) => cachedNetworkImageDefaultErrorWidget(
-                      context: context, url: 'images/icon_fail.png', height: 200, width: double.infinity),
-                  width: double.maxFinite,
-                  height: 200,
+                child: Stack(
+                  children: <Widget>[
+                    CachedNetworkImage(
+                      fit: BoxFit.cover,
+                      imageUrl: _goodsList[index].thumbnail ?? "",
+                      placeholder: (context, url) =>
+                          cachedNetworkImageDefaultPlaceHolder(context: context, height: 200, width: double.infinity),
+                      errorWidget: (context, url, obj) => cachedNetworkImageDefaultErrorWidget(
+                          context: context, url: 'images/icon_fail.png', height: 200, width: double.infinity),
+                      width: double.maxFinite,
+                      height: 200,
+                    ),
+                    Positioned(
+                      child: Container(
+                        height: 200,
+                        alignment: Alignment.center,
+                        child: Icon(
+                          Icons.play_circle_outline,
+                          color: Colors.white70,
+                          size: ScreenUtil().setHeight(60),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
               ),
               SizedBox(height: ScreenUtil().setHeight(10)),

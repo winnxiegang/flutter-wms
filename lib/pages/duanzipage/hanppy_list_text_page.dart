@@ -49,7 +49,7 @@ class HanppyListTextPageState extends State<HanppyListTextPage> with AutomaticKe
         future: _futureCouponList,
         builder: (context, data) {
           if (data.hasData) {
-            _goodsList = Provider.of<DuanZiProvide>(context).listHappyItem;
+            _goodsList = Provider.of<DuanZiProvide>(context).listHappyTexttem;
             if (_goodsList.length == 0) return noDataText();
             if (_goodsList.length != 0 && data.data.result.length == 0) _refreshController.loadNoData();
           } else {
@@ -97,7 +97,7 @@ class HanppyListTextPageState extends State<HanppyListTextPage> with AutomaticKe
     var params = {"page": currentPage.toString(), "count": "10", "type": "text"};
     Response response = await Dio().post(path, queryParameters: params);
     DuanziEntity duanziEntity = DuanziEntity.fromJson(json.decode(response.toString()));
-    Provider.of<DuanZiProvide>(context).addHappyList(duanziEntity.result, currentPage);
+    Provider.of<DuanZiProvide>(context).addHappyTextList(duanziEntity.result, currentPage);
     return DuanziEntity.fromJson(json.decode(response.toString()));
   }
 

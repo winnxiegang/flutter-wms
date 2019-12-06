@@ -5,6 +5,7 @@ import 'package:flutter_wms/provider/duanzi_provide.dart';
 import 'package:flutter_wms/utils/tire_export.dart';
 import 'package:provider/provider.dart';
 
+import 'hanppy_list_gif_page.dart';
 import 'hanppy_list_image_page.dart';
 
 class DuanziPage extends StatefulWidget {
@@ -16,6 +17,7 @@ class DuanziPageState extends State<DuanziPage> {
   final bodyList = [
     HanppyListTextPage(),
     HanppyListImagePage(),
+    HanppyListGifPage(),
     HanppyListVidePage(),
   ];
   final pageController = PageController();
@@ -77,16 +79,32 @@ class DuanziPageState extends State<DuanziPage> {
                       ),
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: GestureDetector(
+                      onTap: () {
+                        pageController.jumpToPage(2);
+                        Provider.of<DuanZiProvide>(context).changeClickPosition(2);
+                      },
+                      child: Chip(
+                        backgroundColor: clickPosition == 2 ? Colors.amber : Colors.white,
+                        label: Text('动图',
+                            style: TextStyle(
+                              color: clickPosition == 2 ? Colors.white : Colors.black,
+                            )),
+                      ),
+                    ),
+                  ),
                   GestureDetector(
                     onTap: () {
-                      pageController.jumpToPage(2);
-                      Provider.of<DuanZiProvide>(context).changeClickPosition(2);
+                      pageController.jumpToPage(3);
+                      Provider.of<DuanZiProvide>(context).changeClickPosition(3);
                     },
                     child: Chip(
-                      backgroundColor: clickPosition == 2 ? Colors.amber : Colors.white,
+                      backgroundColor: clickPosition == 3 ? Colors.amber : Colors.white,
                       label: Text('视频',
                           style: TextStyle(
-                            color: clickPosition == 2 ? Colors.white : Colors.black,
+                            color: clickPosition == 3 ? Colors.white : Colors.black,
                           )),
                     ),
                   ),
