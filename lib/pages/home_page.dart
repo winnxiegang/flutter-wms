@@ -4,6 +4,7 @@ import 'package:flutter_wms/models/post.dart';
 import 'package:flutter_wms/utils/tire_export.dart';
 
 import 'duanzipage/duanzi.dart';
+import 'logistic/logistic_page.dart';
 
 //娱乐
 class HobllyPage extends StatefulWidget {
@@ -77,7 +78,7 @@ class HobllyPageState extends State<HobllyPage> with SingleTickerProviderStateMi
         controller: controller,
         children: <Widget>[
           DuanziPage(),
-          Text("快递查询"),
+          LogisticsDetalPage(),
           Text("公交查询"),
         ],
       ),
