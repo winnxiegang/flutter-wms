@@ -5,6 +5,7 @@ import 'package:flutter_wms/utils/tire_export.dart';
 import 'Logistics_head.dart';
 
 class LogisticsDetalPage extends StatefulWidget {
+
   const LogisticsDetalPage({
     Key key,
   }) : super(key: key);
@@ -14,6 +15,7 @@ class LogisticsDetalPage extends StatefulWidget {
 }
 
 class LogisticsDetalPageState extends State<LogisticsDetalPage> {
+
   @override
   void initState() {
     super.initState();
