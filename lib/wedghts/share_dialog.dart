@@ -126,7 +126,7 @@ class ShareDialogPageState extends State<ShareDialogPage> {
         switch (name) {
           case "微信好友":
             {
-              if (Provider.of<DuanZiProvide>(context).clickPosition == 0) {
+              if (Provider.of<DuanZiProvide>(context).clickPageViewPosition == 0) {
                 ToastOk.show(msg: widget.duanziResult.text);
               } else {
                 ToastOk.show(msg: widget.duanziResult.images ?? widget.duanziResult.thumbnail);
@@ -144,7 +144,7 @@ class ShareDialogPageState extends State<ShareDialogPage> {
             break;
           case "复制链接":
             {
-              if (Provider.of<DuanZiProvide>(context).clickPosition == 0) {
+              if (Provider.of<DuanZiProvide>(context).clickPageViewPosition == 0) {
                 ToastOk.show(msg: widget.duanziResult.text);
               } else {
                 ToastOk.show(msg: widget.duanziResult.images ?? widget.duanziResult.thumbnail);

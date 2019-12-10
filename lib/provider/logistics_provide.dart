@@ -12,7 +12,7 @@ class LogisticsDetalProvide extends ChangeNotifier {
   ];
   String _logisticsId = "sf";
   String _logisticsName = "顺丰快递";
-  String _logisticsNome = "";
+  String _logisticsNome = "顺丰快递";
 
   String get logisticsId => _logisticsId;
 

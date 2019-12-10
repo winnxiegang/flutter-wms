@@ -71,10 +71,21 @@ class DuanZiProvide extends ChangeNotifier {
     notifyListeners();
   }
 
-  int clickPosition = 0;
+//底部PageView位置
+  int clickPageViewPosition = 0;
 
-  void changeClickPosition(int isClickVideo) {
-    clickPosition = isClickVideo;
+  void changePageViewClickPosition(int isClickVideo) {
+    clickPageViewPosition = isClickVideo;
+    notifyListeners();
+  }
+
+  bool _isSlidingPageView = true;
+
+  bool get isSlidingPageView => _isSlidingPageView;
+
+  //滑动判断
+  void setSlidingPageView(bool isSlidingPageView) {
+    _isSlidingPageView = isSlidingPageView;
     notifyListeners();
   }
 }

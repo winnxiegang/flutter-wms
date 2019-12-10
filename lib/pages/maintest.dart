@@ -1,88 +1,144 @@
+import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(new MyApp());
+  if (Platform.isAndroid) {
+    // 以下两行 设置android状态栏为透明的沉浸。写在组件渲染之后，是为了在渲染后进行set赋值，覆盖状态栏，写在渲染之前MaterialApp组件会覆盖掉这个值。
+    SystemUiOverlayStyle systemUiOverlayStyle =
+    SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+  }
 }
 
 class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(primaryColor: Colors.amber),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text("标题"),
-          centerTitle: true,
-        ),
-        body: Content(),
+      title: 'Flutter Demo',
+      theme: ThemeData(
+          primaryColorBrightness: Brightness.dark,
+          platform: TargetPlatform.iOS),
+      home: MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => HomeState();
+}
+
+class TabTitle {
+  String title;
+  int id;
+
+  TabTitle(this.title, this.id);
+}
+
+class HomeState extends State<MyHomePage> with SingleTickerProviderStateMixin {
+  TabController mTabController;
+  PageController mPageController = PageController(initialPage: 0);
+  List<TabTitle> tabList;
+  var currentPage = 0;
+  var isPageCanChanged = true;
+
+  @override
+  void initState() {
+    super.initState();
+    initTabData();
+    mTabController = TabController(
+      length: tabList.length,
+      vsync: this,
+    );
+    mTabController.addListener(() {//TabBar的监听
+      if (mTabController.indexIsChanging) {//判断TabBar是否切换
+        print(mTabController.index);
+        onPageChange(mTabController.index, p: mPageController);
+      }
+    });
+  }
+
+  initTabData() {
+    tabList = [
+      new TabTitle('推荐', 10),
+      new TabTitle('热点', 0),
+      new TabTitle('社会', 1),
+      new TabTitle('娱乐', 2),
+      new TabTitle('体育', 3),
+      new TabTitle('美文', 4),
+      new TabTitle('科技', 5),
+      new TabTitle('财经', 6),
+      new TabTitle('时尚', 7)
+    ];
+  }
+  onPageChange(int index, {PageController p, TabController t}) async {
+    if (p != null) {//判断是哪一个切换
+      isPageCanChanged = false;
+      await mPageController.animateToPage(index, duration: Duration(milliseconds: 500), curve: Curves.ease);//等待pageview切换完毕,再释放pageivew监听
+      isPageCanChanged = true;
+    } else {
+      mTabController.animateTo(index);//切换Tabbar
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    mTabController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("首页"),
+        backgroundColor: Color(0xffd43d3d),
       ),
-    );
-  }
-}
-
-class Content extends StatefulWidget {
-  @override
-  _ContentState createState() => new _ContentState();
-}
-
-class _ContentState extends State<Content> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: LogisticsHeadPage(),
-    );
-  }
-}
-
-class LogisticsHeadPage extends StatelessWidget {
-  var stringList = [
-    "顺丰快递",
-    "申通快递",
-    "圆通速递",
-    "韵达快递",
-    "天天快递",
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.topCenter,
-      child: Column(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.all_inclusive),
+        backgroundColor: Color(0xffd43d3d),
+        elevation: 2.0,
+        highlightElevation: 2.0,
+        onPressed: () {},
+      ),
+      body: Column(
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              Expanded(
-                flex: 1,
-                child: Text("物流公司"),
-              ),
-              DropdownButtonHideUnderline(
-                child: new DropdownButton(
-                  hint: new Text('下拉菜单选择一个物流公司'),
-                  //设置这个value之后,选中对应位置的item，
-                  //再次呼出下拉菜单，会自动定位item位置在当前按钮显示的位置处
-                  value: "顺丰快递",
-                  items: generateItemList(),
-                  onChanged: (T) {},
-                ),
-              ),
-            ],
+          Container(
+            color: new Color(0xfff4f5f6),
+            height: 38.0,
+            child: TabBar(
+              isScrollable: true,
+              //是否可以滚动
+              controller: mTabController,
+              labelColor: Colors.red,
+              unselectedLabelColor: Color(0xff666666),
+              labelStyle: TextStyle(fontSize: 16.0),
+              tabs: tabList.map((item) {
+                return Tab(
+                  text: item.title,
+                );
+              }).toList(),
+            ),
           ),
-          Row(
-            children: <Widget>[
-              Text("物流公司"),
-            ],
-          ),
+          Expanded(
+            child: PageView.builder(
+              itemCount: tabList.length,
+              onPageChanged: (index) {
+                if (isPageCanChanged) {//由于pageview切换是会回调这个方法,又会触发切换tabbar的操作,所以定义一个flag,控制pageview的回调
+                  onPageChange(index);
+                }
+              },
+              controller: mPageController,
+              itemBuilder: (BuildContext context, int index) {
+                return Text(tabList[index].title);
+              },
+            ),
+          )
         ],
       ),
     );
-  }
-
-  List<DropdownMenuItem> generateItemList() {
-    List<DropdownMenuItem> items = new List();
-    stringList.forEach((value) {
-      items.add(DropdownMenuItem(value: value, child: new Center(child: Text(value))));
-    });
-
-    return items;
   }
 }
