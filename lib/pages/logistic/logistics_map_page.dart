@@ -46,7 +46,6 @@ class LogisticsMapPage extends StatelessWidget {
       );
     });
   }
-
   getdata(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var data = prefs.getString("logisticsDetalEntity");
