@@ -1,13 +1,15 @@
 import 'package:amap_map_fluttify/amap_map_fluttify.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wms/manager/MapManager.dart';
-import 'package:flutter_wms/models/store_list_model.dart';
+import 'package:flutter_wms/models/location_model.dart';
 import 'package:flutter_wms/utils/tire_export.dart';
 
 class DrawPointScreen extends StatefulWidget {
   DrawPointScreen({this.data});
 
-  final List<dynamic> data;
+//定位坐标对象
+  final List<LocationUpLoadBean> data;
+  List<Marker> _markers = [];
 
   factory DrawPointScreen.forDesignTime() => DrawPointScreen();
 
@@ -15,9 +17,8 @@ class DrawPointScreen extends StatefulWidget {
   DrawPointScreenState createState() => DrawPointScreenState();
 }
 
-class DrawPointScreenState extends State<DrawPointScreen> {
-  AmapController _controller;
-  Map<LatLng, String> storeMap = {};
+class DrawPointScreenState extends State<DrawPointScreen> with AutomaticKeepAliveClientMixin {
+  AmapController _controller; //地图控制
 
   @override
   void initState() {
@@ -28,23 +29,22 @@ class DrawPointScreenState extends State<DrawPointScreen> {
   Widget build(BuildContext context) {
     if (_controller != null) {
       _controller?.clearMarkers()?.whenComplete(() {
-        storeMap.clear();
         List<MarkerOption> options = [];
-        widget.data.forEach((d) {
-          if (d is StoreListModel) {
-            StoreListModel model = d;
-            LatLng latLng = new LatLng(model?.latitude, model?.longitude);
-            storeMap[latLng] = d.id.toString();
-            options.add(MarkerOption(
-              latLng: latLng,
-              iconUri: Uri.parse('images/icon_location_gray.png'),
-              draggable: false,
-              title: model?.storeName ?? '',
-              imageConfig: createLocalImageConfiguration(context),
-            ));
-          }
+        widget.data.forEach((model) {
+          LatLng latLng = new LatLng(model?.latitude, model?.longitude);
+          options.add(MarkerOption(
+            latLng: latLng,
+            iconUri: Uri.parse('images/icon_location_gray.png'),
+            draggable: false,
+            title: '${model?.longitude}"/" ${model?.latitude}',
+            imageConfig: createLocalImageConfiguration(context),
+          ));
         });
         _controller?.addMarkers(options);
+//        marker.then((value) {
+//          widget._markers = value;
+//        });
+        // set();
       });
     }
     return Scaffold(
@@ -53,40 +53,34 @@ class DrawPointScreenState extends State<DrawPointScreen> {
           showZoomControl: false,
           zoomLevel: 11,
           onMapCreated: (controller) async {
+            //显示自身定位
             if (await MapManager.requestPermission()) {
               await controller.showMyLocation(true);
             }
-
             _controller = controller;
-
             _controller?.setMarkerClickedListener((marker) async {
               LatLng latLng = await marker.location;
+              print("经度--------------${latLng.longitude}");
+              print("维度--------------${latLng.latitude}");
               widget.data.forEach((d) {
-                if (d is StoreListModel) {
-                  if (d.latitude == latLng.latitude && d.longitude == latLng.longitude) {
-//                    Routes.router.navigateTo(context, '${Routes.storeDetalPage}?storeCode=${d.id}',
-//                        transition: TransitionType.native);
-                    return;
-                  }
+                if (d.latitude == latLng.latitude && d.longitude == latLng.longitude) {
+                  showDetalDialog(d);
+                  return;
                 }
               });
             })?.whenComplete(() {
+              ToastOk.show(msg: "点击后进行数据恢复????????");
               if (widget.data.isNotEmpty) {
-                storeMap.clear();
                 List<MarkerOption> options = [];
-                widget.data.forEach((d) {
-                  if (d is StoreListModel) {
-                    StoreListModel model = d;
-                    LatLng latLng = new LatLng(model?.latitude, model?.longitude);
-                    storeMap[latLng] = d.id.toString();
-                    options.add(MarkerOption(
-                      latLng: latLng,
-                      iconUri: Uri.parse('images/icon_location_gray.png'),
-                      draggable: false,
-                      title: model?.storeName ?? '',
-                      imageConfig: createLocalImageConfiguration(context),
-                    ));
-                  }
+                widget.data.forEach((model) {
+                  LatLng latLng = new LatLng(model?.latitude, model?.longitude);
+                  options.add(MarkerOption(
+                    latLng: latLng,
+                    iconUri: Uri.parse('images/icon_location_gray.png'),
+                    draggable: false,
+                    title: '',
+                    imageConfig: createLocalImageConfiguration(context),
+                  ));
                 });
                 _controller?.addMarkers(options);
               }
@@ -95,9 +89,56 @@ class DrawPointScreenState extends State<DrawPointScreen> {
         ));
   }
 
+//将地图缩放至可以显示所有Marker 方式不正确
+  void set() async {
+    Stream.fromIterable(widget._markers).asyncMap((marker) => marker.location).toList().then((value) {
+      _controller.showZoomControl(true);
+    });
+  }
+
+  void showDetalDialog(LocationUpLoadBean locationUpLoadBean) {
+    showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (context) {
+          return Container(
+            height: ScreenUtil().setHeight(320),
+            decoration: new BoxDecoration(
+                color: Colors.white,
+                borderRadius: new BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0))),
+            child: Column(
+              children: <Widget>[
+                Text("定位地址:弹窗展示具体信息"),
+                SizedBox(
+                  height: 30,
+                ),
+                Text("定位地址:    ${locationUpLoadBean.longitude ?? ""}"),
+                SizedBox(
+                  height: 30,
+                ),
+                InkWell(
+                  child: Text(
+                    "查看定位详情",
+                    style: TextStyle(color: Colors.black54),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Routes.router.navigateTo(context, Routes.forgetPassword, transition: TransitionType.native);
+                  },
+                )
+              ],
+            ),
+          );
+        });
+  }
+
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

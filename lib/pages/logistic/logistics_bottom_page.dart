@@ -68,7 +68,7 @@ class LogisticsMapPageState extends State<LogisticsMapPage> with AutomaticKeepAl
               height: 400,
               color: Colors.red,
               child: Center(
-                child: DrawPointScreen(data: new List()),
+                child: DrawPointScreen(data: ProviderUtils.Pro<LocationloadProvide>(context).getListData()),
               ),
             ),
             InkWell(

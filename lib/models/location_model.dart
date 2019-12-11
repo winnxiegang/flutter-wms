@@ -6,4 +6,5 @@ class LocationUpLoadBean {
   String cityCode;
   String adCode;
   String address;
+  int id;
 }
