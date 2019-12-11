@@ -7,6 +7,7 @@ import 'package:flutter_wms/provider/photp_gallery_provide.dart';
 import 'package:flutter_wms/provider/duanzi_provide.dart';
 import 'package:flutter_wms/provider/print_order_privoder.dart';
 import 'package:flutter_wms/utils/tire_export.dart';
+import 'package:jpush_flutter/jpush_flutter.dart';
 import 'package:provider/provider.dart';
 import 'common/app_global.dart';
 import 'pages/loginpage/login.dart';

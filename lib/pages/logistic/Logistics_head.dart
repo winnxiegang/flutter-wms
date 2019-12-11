@@ -89,6 +89,7 @@ class LogisticsHeadPage extends StatelessWidget {
     Response response = await Dio().post(path, queryParameters: params);
     LogisticsDetalEntity logisticsDetalEntity = LogisticsDetalEntity.fromJson(json.decode(response.toString()));
     if (logisticsDetalEntity.resultcode == "200") {
+      ToastOk.show(msg: "获取成功");
       setdata(logisticsDetalEntity);
       Provider.of<LogisticsDetalProvide>(context).setLogisticsDetalEntity(logisticsDetalEntity);
     } else {
