@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wms/common/page_common.dart';
 import 'package:flutter_wms/models/logistics_detal_entity.dart';
-import 'package:flutter_wms/pages/logistic/logistics_map_page.dart';
+import 'package:flutter_wms/pages/logistic/logistics_bottom_page.dart';
 import 'package:flutter_wms/provider/logistics_provide.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_wms/utils/tire_export.dart';
@@ -43,6 +43,4 @@ class LogisticsDetalPageState extends State<LogisticsDetalPage> {
       ),
     );
   }
-
-
 }

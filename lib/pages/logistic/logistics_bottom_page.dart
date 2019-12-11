@@ -1,40 +1,85 @@
 import 'dart:convert';
 
+import 'package:amap_location_fluttify/amap_location_fluttify.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_wms/common/page_common.dart';
+import 'package:flutter_wms/manager/MapManager.dart';
 import 'package:flutter_wms/models/logistics_detal_entity.dart';
-import 'package:flutter_wms/provider/logistics_provide.dart';
+import 'package:flutter_wms/provider/locationload_provide.dart';
 import 'package:flutter_wms/utils/mybottom_sheet.dart';
 import 'package:flutter_wms/utils/tire_export.dart';
 import 'package:provider/provider.dart';
 
-class LogisticsMapPage extends StatelessWidget {
+import 'logistic_map_page.dart';
+
+class LogisticsMapPage extends StatefulWidget {
+  const LogisticsMapPage({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  LogisticsMapPageState createState() => new LogisticsMapPageState();
+}
+
+class LogisticsMapPageState extends State<LogisticsMapPage> with AutomaticKeepAliveClientMixin {
   LogisticsDetalEntity logisticsDetalEntity;
 
   @override
+  void initState() {
+    _getCurrentLocation();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  /// 获取当前位置
+  void _getCurrentLocation() async {
+    MapManager.getLocation(context);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Consumer<LogisticsDetalProvide>(builder: (context, LogisticsDetalProvide data, child) {
-      //if (data.logisticsDetalEntity?.result == null) return noDataText();
-      // _logisticsDetalEntity = data.logisticsDetalEntity;
+    return Consumer<LocationloadProvide>(builder: (context, LocationloadProvide data, child) {
+      if (data.locationUpLoadBean == null) return noDataText();
       return Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           textDirection: TextDirection.ltr,
           children: <Widget>[
             Container(
-              height: 300,
-              color: Colors.red,
-              child: Center(
-                child: Text("地图模式"),
+              width: double.maxFinite,
+              color: Colors.white,
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text("定位省份:    ${data.locationUpLoadBean.province ?? ""}"),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text("详细位置:    ${data.locationUpLoadBean.address ?? ""}"),
+                ],
               ),
             ),
             Container(
-              alignment: Alignment.center,
-              height: 48,
-              color: Colors.white30,
-              width: double.maxFinite,
-              child: InkWell(
-                onTap: () {
-                  getdata(context);
-                },
+              height: 400,
+              color: Colors.red,
+              child: Center(
+                child: DrawPointScreen(data: new List()),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                getdata(context);
+              },
+              child: Container(
+                alignment: Alignment.center,
+                height: 48,
+                color: Colors.white30,
+                width: double.maxFinite,
                 child: Text(
                   "查看快递详情",
                   style: TextStyle(color: Colors.black54),
@@ -46,20 +91,18 @@ class LogisticsMapPage extends StatelessWidget {
       );
     });
   }
+
   getdata(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var data = prefs.getString("logisticsDetalEntity");
     if (data != null) {
-      ///因为取出来的json，这里直接用进行映射成对应的map形式，下面进行class的赋值操作。
       Map<String, dynamic> responseJson = json.decode(data);
       logisticsDetalEntity = new LogisticsDetalEntity.fromJson(responseJson);
-      _openModalBottomSheet(
-        context,
-      );
+      _openModalBottomSheet(context);
     }
   }
 
-  Future _openModalBottomSheet(BuildContext context) async {
+  Future _openModalBottomSheet(BuildContext context) {
     showMyModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -114,6 +157,10 @@ class LogisticsMapPage extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
 
 class MyHomePage extends StatefulWidget {

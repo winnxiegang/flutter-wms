@@ -47,7 +47,9 @@ dependencies:
   chewie: ^0.9.8+1
   #f分享
   share: ^0.6.1+1
-
+  #地图
+  amap_map_fluttify:  0.10.2+a1a3fff
+  amap_location_fluttify: ^0.5.1+a918944
 dev_dependencies:
   flutter_test:
     sdk: flutter

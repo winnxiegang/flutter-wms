@@ -1,3 +1,5 @@
+import 'package:amap_location_fluttify/amap_location_fluttify.dart';
+import 'package:flutter_wms/manager/MapManager.dart';
 import 'package:flutter_wms/models/user_info.dart';
 
 import '../utils/tire_export.dart';
@@ -16,6 +18,7 @@ class Global {
 
   /// 初始化全局信息，会在APP启动时执行
   static Future init() async {
+    await MapManager.init();
     _prefs = await SharedPreferences.getInstance();
     API_DOMAIN = _prefs.getString("api_domain") ?? API_DOMAIN;
 
@@ -23,8 +26,8 @@ class Global {
 
     user = UserInfo();
 
-    user.setUserData(_prefs.getString('token') ?? '',
-        _prefs.getString('userName') ?? '', _prefs.getString('userId') ?? '');
+    user.setUserData(
+        _prefs.getString('token') ?? '', _prefs.getString('userName') ?? '', _prefs.getString('userId') ?? '');
   }
 
   static String getBaseUrl() {
