@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:flutter_wms/utils/tire_export.dart';
 import 'package:flutter_wms/wedghts/base/base_state.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-
 import '../utils/tire_export.dart';
 
 class FLWebviewPage extends StatefulWidget {
@@ -23,39 +23,82 @@ class FLWebviewPage extends StatefulWidget {
 
 class FLWebviewPageState extends State<FLWebviewPage>
     with AutomaticKeepAliveClientMixin<FLWebviewPage>, BaseState<FLWebviewPage> {
-  final Completer<WebViewController> _controller = Completer<WebViewController>();
+  final FlutterWebviewPlugin flutterWebviewPlugin = FlutterWebviewPlugin();
+  bool isloading = true;
+
+  void initState() {
+    super.initState();
+    flutterWebviewPlugin.onStateChanged.listen((WebViewStateChanged state) {
+      switch (state.type) {
+        case WebViewState.shouldStart:
+          setState(() {
+            isloading = true;
+          });
+          break;
+        case WebViewState.startLoad:
+          setState(() {
+            isloading = true;
+          });
+          break;
+        case WebViewState.finishLoad:
+          setState(() {
+            isloading = false;
+          });
+          break;
+        case WebViewState.abortLoad:
+          break;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    flutterWebviewPlugin.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffEFEFEF),
-      appBar: AppBar(
-        backgroundColor: CommonColors.mainColor,
-        actions: <Widget>[Container()],
-        leading: IconButton(
-            icon: Icon(
-              Icons.keyboard_arrow_left,
-              size: 32,
-              color: Colors.white,
-            ),
-            onPressed: () => Navigator.pop(context)),
-        title: Text(
-          widget.urlTitle,
-          style: TextStyle(fontSize: 16, color: Colors.white),
+        backgroundColor: Color(0xffEFEFEF),
+        appBar: AppBar(
+          title: Text(
+            widget.urlTitle,
+            style: TextStyle(fontSize: 16, color: Colors.white),
+          ),
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: CommonColors.mainColor,
+          actions: <Widget>[
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 10.0,
+              ),
+              child: isloading
+                  ? CupertinoActivityIndicator()
+                  : IconButton(
+                      icon: Icon(Icons.refresh),
+                      onPressed: () {
+                        setState(() {
+                          isloading = false;
+                        });
+                        flutterWebviewPlugin.reload();
+                      }),
+            )
+          ],
+          leading: IconButton(
+              icon: Icon(
+                Icons.keyboard_arrow_left,
+                size: 32,
+                color: Colors.white,
+              ),
+              onPressed: () => Navigator.pop(context)),
         ),
-        centerTitle: true,
-        elevation: 0,
-      ),
-      body: WebView(
-        initialUrl: widget.urlString,
-        javascriptMode: JavascriptMode.unrestricted,
-        onWebViewCreated: (WebViewController webViewController) {
-          _controller.complete(webViewController);
-        },
-        onPageFinished: (String url) {
-          print('Page finished loading: $url');
-        },
-      ),
-    );
+        body: WebviewScaffold(
+          url: widget.urlString,
+          withZoom: true, //允许网页缩放
+          withLocalStorage: true,
+          withJavascript: true, //允许执行 js 代码
+        ));
   }
 }
