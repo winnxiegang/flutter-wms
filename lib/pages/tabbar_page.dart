@@ -1,6 +1,11 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_wms/common/event/HttpErrorEvent.dart';
 import 'package:flutter_wms/provider/currentIndex.dart';
+import 'package:flutter_wms/utils/CommonUtils.dart';
 import 'package:flutter_wms/utils/tire_export.dart';
 import 'package:provider/provider.dart';
 
@@ -8,7 +13,14 @@ import 'home_page.dart';
 import 'minepage/mine.dart';
 
 // ignore: must_be_immutable
-class TabbarPage extends StatelessWidget {
+
+class TabbarPage extends StatefulWidget {
+  @override
+  TabbarPageState createState() => new TabbarPageState();
+}
+
+class TabbarPageState extends State<TabbarPage> {
+  StreamSubscription stream;
   final List<BottomNavigationBarItem> bottomTabs = [
     BottomNavigationBarItem(icon: Icon(CupertinoIcons.home), title: Text('娱乐')),
     BottomNavigationBarItem(icon: Icon(CupertinoIcons.profile_circled), title: Text('我的')),
@@ -18,6 +30,31 @@ class TabbarPage extends StatelessWidget {
     MineInformationPage(),
   ];
   DateTime lastPopTime;
+
+  @override
+  void initState() {
+    super.initState();
+    stream = CommonUtils.eventBus.on<HttpErrorEvent>().listen((event) {
+      jpshClickJump(event.message);
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    if (stream != null) {
+      stream.cancel();
+      stream = null;
+    }
+  }
+
+  void jpshClickJump(String message) {
+    Routes.router.navigateTo(
+        context,
+        Routes.fLWebviewPage +
+            "?urlString=${Uri.encodeComponent(message ?? "")}+&urlTitle=${Uri.encodeComponent("推送信息")}",
+        replace: CommonUtils.listPageName.contains("FLWebviewPage") ? true : false);
+  }
 
   @override
   Widget build(BuildContext context) {

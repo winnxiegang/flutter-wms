@@ -1,9 +1,8 @@
-import 'package:amap_location_fluttify/amap_location_fluttify.dart';
-import 'package:flutter_wms/manager/MapManager.dart';
-import 'package:flutter_wms/manager/PushManager.dart';
 import 'package:flutter_wms/models/user_info.dart';
 
 import '../utils/tire_export.dart';
+import 'manager/MapManager.dart';
+import 'manager/PushManager.dart';
 
 var API_DOMAIN = 'http://172.16.6.1:8080/';
 const REQUEST_HEADERS = {'Content-Type': 'application/x-www-form-urlencoded'};
@@ -19,7 +18,7 @@ class Global {
 
   /// 初始化全局信息，会在APP启动时执行
   static Future init() async {
-   // await MapManager.init();
+    await MapManager.init();
     await PushManager();
     _prefs = await SharedPreferences.getInstance();
     API_DOMAIN = _prefs.getString("api_domain") ?? API_DOMAIN;

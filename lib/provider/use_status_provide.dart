@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wms/common/app_global.dart';
+import 'package:flutter_wms/utils/CommonUtils.dart';
 
 class UseStatusProvide extends ChangeNotifier {
   /// 是否登录
-  bool get isLogin =>
-      Global.user.getToken() != null && Global.user.getToken().isNotEmpty;
+  bool get isLogin => Global.user.getToken() != null && Global.user.getToken().isNotEmpty;
 
   /// 是否登录
   String get userName => Global.user.getUserName() ?? '';
@@ -25,6 +25,7 @@ class UseStatusProvide extends ChangeNotifier {
     Global.user.userName = "";
     Global.user.userId = "";
     notifyListeners();
+    CommonUtils.listPageName?.clear();
     Global.saveUserProfileInfo();
   }
 

@@ -34,7 +34,9 @@ class MapManager {
     if (await requestPermission()) {
       _location = await AmapLocation.fetchLocation();
       if (_location != null) {
-        ProviderUtils.Pro<LocationloadProvide>(context, refushListen: true).setLocationData(_location);
+        Future.delayed(Duration.zero, () {
+          ProviderUtils.Pro<LocationloadProvide>(context, refushListen: true).setLocationData(_location);
+        });
       }
     }
   }

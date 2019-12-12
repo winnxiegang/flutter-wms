@@ -51,6 +51,8 @@ dependencies:
   amap_map_fluttify: 0.10.2+a1a3fff
   amap_location_fluttify: ^0.5.1+a918944
   jpush_flutter: ^0.1.0
+  event_bus:  ^1.1.0
+  webview_flutter: ^0.3.17
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:amap_location_fluttify/amap_location_fluttify.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_wms/common/manager/MapManager.dart';
 import 'package:flutter_wms/common/page_common.dart';
-import 'package:flutter_wms/manager/MapManager.dart';
 import 'package:flutter_wms/models/logistics_detal_entity.dart';
 import 'package:flutter_wms/provider/locationload_provide.dart';
 import 'package:flutter_wms/utils/mybottom_sheet.dart';

@@ -1,6 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wms/pages/confirm_new_password.dart';
+import 'package:flutter_wms/pages/fl_webview_page.dart';
 import 'package:flutter_wms/pages/loginpage/forget_passworld.dart';
 import 'package:flutter_wms/pages/loginpage/login.dart';
 import 'package:flutter_wms/pages/tabbar_page.dart';
@@ -45,4 +46,14 @@ var photpGalleryPageHandler = new Handler(handlerFunc: (BuildContext context, Ma
 var videoPalyShowPageHandler = new Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   String urlPaly = params['urlPaly']?.first ?? '';
   return VideoPalyShowPage(url: urlPaly);
+});
+
+///图片查看
+var fLWebviewPageHandler = new Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String urlString = params['urlString']?.first ?? '';
+  String urlTitle = params['urlTitle']?.first ?? '';
+  return FLWebviewPage(
+    urlString: urlString,
+    urlTitle: urlTitle,
+  );
 });

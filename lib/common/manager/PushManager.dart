@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter_wms/common/event/HttpErrorEvent.dart';
 import 'package:flutter_wms/utils/tire_export.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -46,18 +47,19 @@ class PushManager {
       onReceiveNotification: (Map<String, dynamic> message) async {
         print("接收到推送通知栏: $message");
         if (Platform.isIOS) {
-          ToastOk.show(msg: message['aps']['alert'] ?? "你有一条新的信息请注意查看哦,");
+       //   ToastOk.show(msg: message['aps']['alert'] ?? "你有一条新的信息请注意查看哦,");
         } else if (Platform.isAndroid) {
-          ToastOk.show(msg: message['alert'] ?? "你有一条新的信息请注意查看哦,");
+         // ToastOk.show(msg: message['alert'] ?? "你有一条新的信息请注意查看哦,");
         }
       },
       //通知栏推送打开正确的获取message['alert']
       onOpenNotification: (Map<String, dynamic> message) async {
         print("接收到通知栏推送打开: $message");
         if (Platform.isIOS) {
-          ToastOk.show(msg: message['aps']['alert'] ?? "你有一条新的信息请注意查看哦,");
+         // ToastOk.show(msg: message['aps']['alert'] ?? "你有一条新的信息请注意查看哦,");
         } else if (Platform.isAndroid) {
-          ToastOk.show(msg: message['alert'] ?? "你有一条新的信息请注意查看哦,");
+         // ToastOk.show(msg: message['alert'] ?? "你有一条新的信息请注意查看哦,");
+          HttpErrorEvent.errorHandleFunction(message['alert']);
         }
       },
       onReceiveMessage: (Map<String, dynamic> message) async {

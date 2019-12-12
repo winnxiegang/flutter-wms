@@ -113,6 +113,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.2.2"
+  event_bus:
+    dependency: "direct main"
+    description:
+      name: event_bus
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.1.0"
   fluro:
     dependency: "direct main"
     description:
@@ -469,6 +476,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.1.0"
+  webview_flutter:
+    dependency: "direct main"
+    description:
+      name: webview_flutter
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.17"
 sdks:
   dart: ">=2.5.0 <3.0.0"
   flutter: ">=1.9.1+hotfix.5 <2.0.0"

@@ -1,6 +1,6 @@
 import 'package:amap_map_fluttify/amap_map_fluttify.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_wms/manager/MapManager.dart';
+import 'package:flutter_wms/common/manager/MapManager.dart';
 import 'package:flutter_wms/models/location_model.dart';
 import 'package:flutter_wms/utils/tire_export.dart';
 
