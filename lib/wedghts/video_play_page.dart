@@ -21,8 +21,7 @@ class VideoPalyShowPageState extends State<VideoPalyShowPage> {
 
   @override
   void initState() {
-    _videoPlayerController1 = VideoPlayerController.network(
-        'https://haokan.baidu.com/v?vid=476108025292073694&pd=bjh&fr=bjhauthor&type=video');
+    _videoPlayerController1 = VideoPlayerController.network('https://flutter.github.io/assets-for-api-docs/videos/butterfly.mp4');
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController1,
       aspectRatio: 3 / 2,

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wms/models/post.dart';
+import 'package:flutter_wms/pages/scan/scan_and_scan.dart';
 import 'package:flutter_wms/utils/tire_export.dart';
 
 import 'duanzipage/duanzi.dart';
@@ -29,6 +30,9 @@ class HobllyPageState extends State<HobllyPage> with SingleTickerProviderStateMi
       ),
       Tab(
         text: "快递查询",
+      ),
+      Tab(
+        text: "扫一扫",
       ),
       Tab(
         text: "公交查询",
@@ -79,6 +83,7 @@ class HobllyPageState extends State<HobllyPage> with SingleTickerProviderStateMi
         children: <Widget>[
           DuanziPage(),
           LogisticsDetalPage(),
+          ScanPage(),
           Text("公交查询"),
         ],
       ),

@@ -25,8 +25,7 @@ class DioRequestControl {
 处理错误，可以自己在ui层.error处理
 printError 在需要退出到其他界面中，可能导致dialog 或者其他的控件的context无法获取，需要网络请求时加上
  */
-  Future _error<T>(BaseResp baseResp, BuildContext context,
-      {Function printError}) {
+  Future _error<T>(BaseResp baseResp, BuildContext context, {Function printError}) {
     if (baseResp.code == 401 && context != null) {
       ToastOk.show(msg: "登录失效，重新登录");
       Routes.router.navigateTo(context, Routes.login, replace: true);
@@ -48,14 +47,12 @@ printError 在需要退出到其他界面中，可能导致dialog 或者其他�
   /**
    * 登陆
    */
-  Future<LoginEntity> logion(
-      String username, String password, BuildContext context,
+  Future<LoginEntity> logion(String username, String password, BuildContext context,
       {bool backdiss, Function printError}) async {
     dialog.showLoadingProgress(context, backdiss);
-    BaseResp<Map<String, dynamic>> baseResp =
-        await HttpUtil.getInstance(context).request<Map<String, dynamic>>(
-            Method.post, ApiUrls.getPath(path: ApiUrls.LOGIN),
-            data: {"username": username, "password": password, "type": 1});
+    BaseResp<Map<String, dynamic>> baseResp = await HttpUtil.getInstance(context).request<Map<String, dynamic>>(
+        Method.post, ApiUrls.getPath(path: ApiUrls.LOGIN),
+        data: {"username": username, "password": password, "type": 1});
     dialog.dismissDialog(context);
     LoginEntity loginEntity;
     if (baseResp.code == 0) {
@@ -70,8 +67,7 @@ printError 在需要退出到其他界面中，可能导致dialog 或者其他�
   /**
    * 登陆
    */
-  Future<PrintOrderEntity> printOrderData(
-      String oeNo, String page, String pageSize, BuildContext context,
+  Future<PrintOrderEntity> printOrderData(String oeNo, String page, String pageSize, BuildContext context,
       {bool backdiss, Function printError}) async {
     if (context == null) {
       print("logcontext===null");
@@ -79,10 +75,36 @@ printError 在需要退出到其他界面中，可能导致dialog 或者其他�
     if (context != null) {
       dialog.showLoadingProgress(context, backdiss);
     }
-    BaseResp<Map<String, dynamic>> baseResp =
-        await HttpUtil.getInstance(context).request<Map<String, dynamic>>(
-            Method.post, ApiUrls.getPath(path: ApiUrls.printOrderPage),
-            data: {"oeNo": oeNo, "page": page, "pageSize": pageSize});
+    BaseResp<Map<String, dynamic>> baseResp = await HttpUtil.getInstance(context).request<Map<String, dynamic>>(
+        Method.post, ApiUrls.getPath(path: ApiUrls.printOrderPage),
+        data: {"oeNo": oeNo, "page": page, "pageSize": pageSize});
+    if (context != null) {
+      dialog.dismissDialog(context);
+    }
+    PrintOrderEntity printOrderData;
+    if (baseResp.code == 0) {
+      if (baseResp.data != null) {
+        printOrderData = PrintOrderEntity.fromJson(baseResp.data);
+      }
+
+      return printOrderData;
+    }
+    return _error<LoginEntity>(baseResp, context, printError: printError);
+  }
+
+  /**
+   * 登陆
+   */
+  Future<PrintOrderEntity> upLoadInfoData(String path, BuildContext context,
+      {bool backdiss, Function printError}) async {
+    if (context == null) {
+      print("logcontext===null");
+    }
+    if (context != null) {
+      dialog.showLoadingProgress(context, backdiss);
+    }
+    BaseResp<Map<String, dynamic>> baseResp = await HttpUtil.getInstance(context)
+        .upload<Map<String, dynamic>>(Method.post, ApiUrls.getPath(path: ApiUrls.printOrderPage), data: {"path": path});
     if (context != null) {
       dialog.dismissDialog(context);
     }
