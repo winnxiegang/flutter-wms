@@ -9,7 +9,7 @@ class BusHeadPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (BuildContext context, BusProvider value, Widget child) {
-        if (value == null||value.busStationDetalEntity == null) return noDataText();
+        if (value == null || value.busStationDetalEntity == null) return noDataText();
         ProviderUtils.Pro<BusProvider>(context)
             .setBusStationDetalResultBuslinesBusstop(value.busStationDetalEntity.result.buslines[0].busstops);
         return Container(
@@ -76,7 +76,10 @@ class BusHeadPage extends StatelessWidget {
   Widget _stationItenWidget(BuildContext context, int index) {
     return Container(
       child: InkWell(
-        onTap: () => {ToastOk.show(msg: ProviderUtils.Pro<BusProvider>(context).busstops[index].location)},
+        onTap: () => {
+          ProviderUtils.Pro<BusProvider>(context)
+              .setClickName(ProviderUtils.Pro<BusProvider>(context).busstops[index].name)
+        },
         child: Column(
           children: <Widget>[
             Container(
@@ -90,15 +93,29 @@ class BusHeadPage extends StatelessWidget {
             SizedBox(
               height: 6,
             ),
-            Text(
-              (index + 1).toString(),
-              style: TextStyle(
-                fontSize: 16,
-              ),
-            ),
+            ProviderUtils.Pro<BusProvider>(context).clickName ==
+                    ProviderUtils.Pro<BusProvider>(context).busstops[index].name
+                ? Icon(
+                    Icons.star_border,
+                    color: Colors.grey,
+                  )
+                : Text(
+                    (index + 1).toString(),
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
             Column(
-              children: List<Widget>.generate(ProviderUtils.Pro<BusProvider>(context).busstops[index].name.length,
-                  (i) => _getTextColumListWidget(ProviderUtils.Pro<BusProvider>(context).busstops[index].name, i)),
+              children: List<Widget>.generate(
+                  ProviderUtils.Pro<BusProvider>(context).busstops[index].name.length,
+                  (i) => _getTextColumListWidget(
+                        ProviderUtils.Pro<BusProvider>(context).busstops[index].name,
+                        i,
+                        ProviderUtils.Pro<BusProvider>(context).clickName ==
+                                ProviderUtils.Pro<BusProvider>(context).busstops[index].name
+                            ? Colors.amber
+                            : Colors.black,
+                      )),
             ),
           ],
         ),
@@ -107,12 +124,10 @@ class BusHeadPage extends StatelessWidget {
   }
 
   /// getTextColumList组件
-  Widget _getTextColumListWidget(String itemText, int index) {
+  Widget _getTextColumListWidget(String itemText, int index, Color mColor) {
     return Text(
       itemText.substring(index, index + 1),
-      style: TextStyle(
-        fontSize: 16,
-      ),
+      style: TextStyle(fontSize: 16, color: mColor),
     );
   }
 }

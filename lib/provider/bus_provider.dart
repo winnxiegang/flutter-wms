@@ -8,6 +8,9 @@ class BusProvider extends ChangeNotifier {
   List<BusStationDetalResultBuslinesBusstop> _busstops;
 
   List<BusStationDetalResultBuslinesBusstop> get busstops => _busstops;
+  String _clickName = "";
+
+  String get clickName => _clickName;
 
   void setBusStationDetal(BusStationDetalEntity busStationDetalEntity) {
     _busStationDetalEntity = busStationDetalEntity;
@@ -17,5 +20,13 @@ class BusProvider extends ChangeNotifier {
   void setBusStationDetalResultBuslinesBusstop(List<BusStationDetalResultBuslinesBusstop> busstops) {
     _busstops = busstops;
     notifyListeners();
+  }
+
+  void setClickName(String clickName) {
+    _clickName = clickName;
+    notifyListeners();
+  }
+  Color getmColor(){
+
   }
 }

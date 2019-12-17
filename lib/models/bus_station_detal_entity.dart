@@ -126,14 +126,16 @@ class BusStationDetalResultBuslinesBusstop {
   String name;
   String location;
   String id;
+  bool isClick=false;
 
-  BusStationDetalResultBuslinesBusstop({this.sequence, this.name, this.location, this.id});
+  BusStationDetalResultBuslinesBusstop({this.sequence, this.name, this.location, this.id, this.isClick});
 
   BusStationDetalResultBuslinesBusstop.fromJson(Map<String, dynamic> json) {
     sequence = json['sequence'];
     name = json['name'];
     location = json['location'];
     id = json['id'];
+    isClick = json['isClick'];
   }
 
   Map<String, dynamic> toJson() {
@@ -142,6 +144,7 @@ class BusStationDetalResultBuslinesBusstop {
     data['name'] = this.name;
     data['location'] = this.location;
     data['id'] = this.id;
+    data['isClick'] = this.isClick;
     return data;
   }
 }
