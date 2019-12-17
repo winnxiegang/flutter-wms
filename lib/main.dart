@@ -1,6 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_wms/provider/bus_provider.dart';
 import 'package:flutter_wms/provider/locationload_provide.dart';
 import 'package:flutter_wms/provider/logistics_provide.dart';
 import 'package:flutter_wms/provider/photp_gallery_provide.dart';
@@ -32,6 +33,7 @@ void main() {
           ChangeNotifierProvider.value(value: PhotpGalleryProvide()),
           ChangeNotifierProvider.value(value: LogisticsDetalProvide()),
           ChangeNotifierProvider.value(value: LocationloadProvide()),
+          ChangeNotifierProvider.value(value: BusProvider()),
         ],
         child: MyApp(),
       ),

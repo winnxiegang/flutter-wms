@@ -5,7 +5,7 @@ import 'package:event_bus/event_bus.dart';
 class CommonUtils {
   static const DEBUG = true;
   static const TOKEN_KEY = "token";
-  static const Local_Icon_prefix = "static/images/";
+  static const Local_Icon_prefix = "images/";
 
   static const QRCode_Prefix = "https://lizhiketang.com/";
 
