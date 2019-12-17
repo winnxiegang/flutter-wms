@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:event_bus/event_bus.dart';
+import 'package:flutter_wms/utils/toast_util.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class CommonUtils {
   static const DEBUG = true;
@@ -61,5 +63,26 @@ class CommonUtils {
 
   static romveStatePage(String pageName) {
     listPageName?.remove(pageName);
+  }
+
+//申请权限
+  static Future requestPermission() async {
+    // 申请权限
+    Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler()
+        .requestPermissions([PermissionGroup.location, PermissionGroup.storage, PermissionGroup.camera]);
+    // 申请结果
+    PermissionStatus permissionlocation = await PermissionHandler().checkPermissionStatus(PermissionGroup.location);
+// 申请结果
+    PermissionStatus permissionstorage = await PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
+    PermissionStatus permissioncamera = await PermissionHandler().checkPermissionStatus(PermissionGroup.camera);
+    if (permissionlocation == PermissionStatus.granted &&
+        permissionstorage == PermissionStatus.granted &&
+        permissioncamera == PermissionStatus.granted) {
+      //权限申请成功
+      // ToastOk.show(msg: "去登陆");
+    } else {
+      ToastOk.show(msg: "亲！更好使用程序请开启相关权限");
+      await PermissionHandler().openAppSettings();
+    }
   }
 }

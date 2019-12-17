@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_lifecycle_state/flutter_lifecycle_state.dart';
 import 'package:flutter_wms/provider/login_provide.dart';
+import 'package:flutter_wms/utils/CommonUtils.dart';
 import 'package:flutter_wms/utils/button_utils.dart';
 import 'package:flutter_wms/utils/common_utils.dart';
 import 'package:flutter_wms/utils/input_check_utils.dart';
 import 'package:flutter_wms/utils/textstyle.dart';
 import 'package:flutter_wms/utils/tire_export.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../loginpage/login_inputitem_page.dart';
 import 'login_chosevitem_page.dart';
@@ -15,7 +18,13 @@ class LoginPage extends StatefulWidget {
   LoginPageState createState() => new LoginPageState();
 }
 
-class LoginPageState extends State<LoginPage> {
+class LoginPageState extends StateWithLifecycle<LoginPage> {
+  @override
+  void onResume() {
+    super.onResume();
+    CommonUtils.requestPermission();
+  }
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil(width: 375, height: 657)..init(context);
@@ -23,8 +32,7 @@ class LoginPageState extends State<LoginPage> {
         appBar: CommonAppBar.buildAppBar("登录界面"),
         body: GestureDetector(
           onTap: () {
-            FocusScope.of(context)
-                .requestFocus(FocusNode()); //兼容iPhone 点击空白关闭键盘
+            FocusScope.of(context).requestFocus(FocusNode()); //兼容iPhone 点击空白关闭键盘
           },
           child: Container(
             height: double.maxFinite,
