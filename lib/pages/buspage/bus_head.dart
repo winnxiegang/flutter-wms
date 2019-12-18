@@ -10,8 +10,6 @@ class BusHeadPage extends StatelessWidget {
     return Consumer(
       builder: (BuildContext context, BusProvider value, Widget child) {
         if (value == null || value.busStationDetalEntity == null) return noDataText();
-        ProviderUtils.Pro<BusProvider>(context)
-            .setBusStationDetalResultBuslinesBusstop(value.busStationDetalEntity.result.buslines[0].busstops);
         return Container(
           alignment: Alignment.topLeft,
           child: Column(
