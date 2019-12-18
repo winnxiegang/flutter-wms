@@ -14,19 +14,12 @@ class BusProvider extends ChangeNotifier {
 
   void setBusStationDetal(BusStationDetalEntity busStationDetalEntity) {
     _busStationDetalEntity = busStationDetalEntity;
-    notifyListeners();
-  }
-
-  void setBusStationDetalResultBuslinesBusstop(List<BusStationDetalResultBuslinesBusstop> busstops) {
-    _busstops = busstops;
+    _busstops = _busStationDetalEntity.result.buslines[0].busstops;
     notifyListeners();
   }
 
   void setClickName(String clickName) {
     _clickName = clickName;
     notifyListeners();
-  }
-  Color getmColor(){
-
   }
 }

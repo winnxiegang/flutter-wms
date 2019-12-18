@@ -171,73 +171,57 @@ class BusSearchPageState extends State<BusSearchPage> {
       "    ]\n" +
       "  }\n" +
       "}";
-  Future futureData;
 
   @override
   void initState() {
-    futureData = getData();
+    getData();
     super.initState();
   }
 
   @override
+  void dispose() {
+    // TODO: 销毁
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return FutureBuilder<BusStationDetalEntity>(
-        future: futureData,
-        builder: (context, data) {
-          if (data.hasData) {
-            if (data.data == null)
-              return InkWell(
+    return Container(
+      padding: EdgeInsets.all(16),
+      color: CommonColors.grayBg,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          children: <Widget>[
+            Offstage(
+              offstage: ProviderUtils.Pro<BusProvider>(context).busStationDetalEntity != null ? true : false,
+              child: InkWell(
                 child: Text("点击数据存储"),
                 onTap: () => {_shapeDataWidget(busdata)},
-              );
-            Future.delayed(Duration.zero).then((e) {
-              ProviderUtils.Pro<BusProvider>(context).setBusStationDetal(data.data);
-              ProviderUtils.Pro<BusProvider>(context)
-                  .setBusStationDetalResultBuslinesBusstop(data.data.result.buslines[0].busstops);
-            });
-          } else {
-            return noDataText();
-          }
-          return Container(
-            padding: EdgeInsets.all(16),
-            color: CommonColors.grayBg,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                children: <Widget>[
-                  Offstage(
-                    offstage: ProviderUtils.Pro<BusProvider>(context).busStationDetalEntity != null ? true : false,
-                    child: InkWell(
-                      child: Text("点击数据存储"),
-                      onTap: () => {_shapeDataWidget(busdata)},
-                    ),
-                  ),
-                  BusHeadPage(),
-                  BusMapBottomPage(),
-                ],
               ),
             ),
-          );
-        });
+            BusHeadPage(),
+            BusMapBottomPage(),
+          ],
+        ),
+      ),
+    );
   }
 
   void _shapeDataWidget(String busdata) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     BusStationDetalEntity busStationDetalEntity = BusStationDetalEntity.fromJson(jsonDecode(busdata));
     ToastOk.show(msg: busStationDetalEntity.reason);
-    prefs.setString("busdata", jsonEncode(busStationDetalEntity).toString());
-    //所有初始值的，应该放在子布局加载前，子布局只是用Consumer 获取
-    Future.delayed(Duration.zero).then((e) {
-      ProviderUtils.Pro<BusProvider>(context).setBusStationDetal(busStationDetalEntity);
-      ProviderUtils.Pro<BusProvider>(context)
-          .setBusStationDetalResultBuslinesBusstop(busStationDetalEntity.result.buslines[0].busstops);
-    });
+    prefs.setString("busdata",  jsonEncode(busStationDetalEntity).toString());
+    ProviderUtils.Pro<BusProvider>(context).setBusStationDetal(busStationDetalEntity);
   }
 
-  Future<BusStationDetalEntity> getData() async {
+  void getData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString("busdata") != null
-        ? BusStationDetalEntity.fromJson(jsonDecode(prefs.getString("busdata")))
-        : null;
+    var data = prefs.getString("busdata");
+    if (data != null) {
+      ProviderUtils.Pro<BusProvider>(context)
+          .setBusStationDetal(BusStationDetalEntity.fromJson(jsonDecode(data)));
+    }
   }
 }
