@@ -85,4 +85,10 @@ class CommonUtils {
       await PermissionHandler().openAppSettings();
     }
   }
+
+  ///获取版本信息
+  static Future<PackageInfo> getPlatformInfo() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    return packageInfo;
+  }
 }

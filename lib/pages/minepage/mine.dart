@@ -3,9 +3,12 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_lifecycle_state/flutter_lifecycle_state.dart';
 import 'package:flutter_wms/common/app_global.dart';
+import 'package:flutter_wms/utils/CommonUtils.dart';
 import 'package:flutter_wms/utils/tire_export.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:package_info/package_info.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 //我的信息
@@ -18,8 +21,10 @@ class MineInformationPage extends StatefulWidget {
   MineInformationPageState createState() => new MineInformationPageState();
 }
 
-class MineInformationPageState extends State<MineInformationPage> {
+class MineInformationPageState extends StateWithLifecycle<MineInformationPage> {
   File _image;
+  bool loadVersion = false;
+  String versionNmae = "";
 
   @override
   void initState() {
@@ -29,6 +34,19 @@ class MineInformationPageState extends State<MineInformationPage> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  @override
+  void onResume() {
+    super.onResume();
+    if (loadVersion == false) {
+      CommonUtils.getPlatformInfo().then((value) {
+        loadVersion = true;
+        setState(() {
+          versionNmae = value.version;
+        });
+      });
+    }
   }
 
   @override
@@ -97,7 +115,7 @@ class MineInformationPageState extends State<MineInformationPage> {
 
   /// headView组件
   Widget _headViewWidget(File file) {
-    if (file!=null&&file.path.isNotEmpty) {
+    if (file != null && file.path.isNotEmpty) {
       return ClipOval(
           child: Image.file(
         _image,
@@ -207,7 +225,7 @@ class MineInformationPageState extends State<MineInformationPage> {
                 Expanded(
                   flex: 2,
                   child: Text(
-                    "V ${1.00}",
+                    "V $versionNmae",
                     textAlign: TextAlign.end,
                     style: TextStyleUtils.mineTextRightStyle,
                   ),
