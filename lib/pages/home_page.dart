@@ -6,7 +6,9 @@ import 'package:flutter_wms/utils/tire_export.dart';
 
 import 'buspage/bus_page.dart';
 import 'duanzipage/duanzi.dart';
+import 'flutterlist/flutter_list.dart';
 import 'logistic/logistic_page.dart';
+
 //28fde5b3f434c7b0c3b3fe0f5205089d
 //娱乐
 class HobllyPage extends StatefulWidget {
@@ -37,6 +39,9 @@ class HobllyPageState extends State<HobllyPage> with SingleTickerProviderStateMi
       ),
       Tab(
         text: "公交查询",
+      ),
+      Tab(
+        text: "FlutterList",
       ),
     ];
 
@@ -86,6 +91,7 @@ class HobllyPageState extends State<HobllyPage> with SingleTickerProviderStateMi
           LogisticsDetalPage(),
           ScanPage(),
           BusSearchPage(),
+          FlutterListPage(),
         ],
       ),
     );

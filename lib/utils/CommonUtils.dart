@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter_wms/utils/toast_util.dart';
+import 'package:package_info/package_info.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 class CommonUtils {
   static const DEBUG = true;
   static const TOKEN_KEY = "token";
